@@ -637,7 +637,7 @@
         .profile-img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
             transition: var(--transition-smooth);
         }
 
@@ -835,30 +835,38 @@
             transform: translateY(-2px);
         }
 
-        /* Featured Event with Parallax */
-        .featured-event {
-            position: relative;
-            background: linear-gradient(rgba(15, 23, 42, 0.9), rgba(30, 58, 138, 0.9)), 
-                        url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
-            background-size: cover;
-            background-attachment: fixed;
-            background-position: center;
-            color: var(--white);
-            padding: 6rem 0;
-            border-radius: 30px;
-            overflow: hidden;
-            margin: 4rem 0;
-            box-shadow: var(--shadow-lg);
-        }
 
         .event-content {
-            position: relative;
-            z-index: 2;
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
+            background: linear-gradient(rgba(15,23,42,0.9), rgba(30,58,138,0.9));
+    border-radius: 25px;
+    padding: 3rem;
+    color: white;
+    box-shadow: var(--shadow-lg);
         }
 
+        .current-event-content {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 3rem;
+    align-items: center;
+}
+
+.current-event img {
+    width: 100%;
+    border-radius: 20px;
+    height: 320px;
+    object-fit: cover;
+}
+.current-event-text h3 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.current-event-text p {
+    color: #e2e8f0;
+    margin-bottom: 2rem;
+    line-height: 1.8;
+}
         .event-badge {
             display: inline-block;
             background: var(--gradient-accent);
@@ -1128,9 +1136,6 @@
                 padding: 2rem;
             }
             
-            .featured-event {
-                background-attachment: scroll;
-            }
         }
 
         @media (max-width: 576px) {
@@ -1200,28 +1205,20 @@
                 <div class="hero-content">
                     <h2>Advancing Computing Excellence Through Innovation</h2>
                     <p>The Centre of Excellence for Advanced Computing (AdvComp) at UniMAP pioneers cutting-edge research in computational sciences, driving innovation and academic excellence in advanced computing technologies.</p>
-                    <a href="#" class="btn btn-yellow nav-link" data-page="about">
-                        <span>Explore Our Centre</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
-                    
-                    <div class="achievement-badge">
-                        <i class="fas fa-trophy"></i>
-                        <span>2024 Achievements: 5 Gold Medals in International Competitions</span>
-                    </div>
                 </div>
             </div>
             
             <!-- Featured Event -->
-            <div class="featured-event">
                 <div class="event-content">
-                    <div class="event-badge">Featured Event</div>
-                    <h3>International Conference on Advanced Computing (ICAC 2025)</h3>
-                    <p>Join us for the premier computing conference featuring cutting-edge research, industry insights, and networking opportunities with global leaders in AI, quantum computing, and data science.</p>
-                    <a href="#" class="btn">Register Now</a>
+                    <img src="images/icac2025.jpg" alt="ICAC 2025">
+                <h3>International Conference on Advanced Computing (ICAC 2025)</h3>
+                <p>
+                    Join us for the premier computing conference featuring cutting-edge research,
+                    industry insights, and networking opportunities with global leaders in AI,
+                    quantum computing, and data science.
+                </p>
                 </div>
             </div>
-        </div>
     </section>
 
     <!-- About Section -->
@@ -1277,12 +1274,11 @@
                                 <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Prof. Dr. Norizan Mat Diah" class="profile-img">
                             </div>
                             <div class="profile-content">
-                                <h3>Prof. Dr. Norizan Mat Diah</h3>
-                                <div class="title">Professor of Computational Intelligence</div>
+                                <h3>Prof. Madya Ts. Dr. Ku Nurul Fazira Ku Azir</h3>
+                                <div class="title">Ph.D Electronic, Electrical and Computer Engineering, University of Birmingham, UK M.Sc in Human Centered System, University of Birmingham, UK B.Sc in Computer Science, Coventry University, UK Diploma in Computer Science, KPTM KL</div>
                                 <div>
-                                    <span class="expertise-tag">Artificial Intelligence</span>
-                                    <span class="expertise-tag">Machine Learning</span>
-                                    <span class="expertise-tag">Neural Networks</span>
+                                    <span class="expertise-tag">Human Computer Interaction</span>
+                                    <span class="expertise-tag">Internet of Things</span>
                                 </div>
                                 <p style="margin-top: 1rem; color: var(--text-light); font-size: 0.95rem;">Leading researcher in AI optimization with 15+ years experience. Published over 80 papers in top-tier journals.</p>
                                 <a href="https://unimap.edu.my/staff/norizan" class="profile-link" target="_blank">
@@ -1290,8 +1286,64 @@
                                 </a>
                             </div>
                         </div>
+
+                        <div class="profile-card">
+                            <div class="profile-img-container">
+                                <img src="https://zamrizahir88.github.io/cv/images/MohdZamri5.jpg" alt="Prof. Dr. Norizan Mat Diah" class="profile-img">
+                            </div>
+                            <div class="profile-content">
+                                <h3>Prof. Ir. Ts. R. Badlishah Ahmad</h3>
+                                <div class="title">Professor of Computer System, Universiti Malaysia Perlis</div>
+                                <div>
+                                    <span class="expertise-tag">Electronic System</span>
+                                    <span class="expertise-tag">Telecommunication</span>
+                                </div>
+                                <p style="margin-top: 1rem; color: var(--text-light); font-size: 0.95rem;">Leading researcher in AI optimization with 15+ years experience. Published over 80 papers in top-tier journals.</p>
+                                <a href="https://zamrizahir88.github.io/cv/main.html" class="profile-link" target="_blank">
+                                    <i class="fas fa-globe"></i> View Profile
+                                </a>
+                            </div>
+                        </div>
                         
                         <!-- Additional profile cards would continue here... -->
+                         <div class="profile-card">
+                            <div class="profile-img-container">
+                                <img src="https://zamrizahir88.github.io/cv/images/MohdZamri5.jpg" alt="Prof. Dr. Norizan Mat Diah" class="profile-img">
+                            </div>
+                            <div class="profile-content">
+                                <h3>Ts. Dr. Mohd Zamri Bin Zahir Ahmad</h3>
+                                <div class="title">Senior Lecturer</div>
+                                <div>
+                                    <span class="expertise-tag">Optimization Algorithms</span>
+                                    <span class="expertise-tag">Combinatorial Testing</span>
+                                    <span class="expertise-tag">Software Testing</span>
+                                </div>
+                                <p style="margin-top: 1rem; color: var(--text-light); font-size: 0.95rem;">Leading researcher in AI optimization with 15+ years experience. Published over 80 papers in top-tier journals.</p>
+                                <a href="https://zamrizahir88.github.io/cv/main.html" class="profile-link" target="_blank">
+                                    <i class="fas fa-globe"></i> View Profile
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="profile-card">
+                            <div class="profile-img-container">
+                                <img src="https://zamrizahir88.github.io/cv/images/MohdZamri5.jpg" alt="Prof. Dr. Norizan Mat Diah" class="profile-img">
+                            </div>
+                            <div class="profile-content">
+                                <h3>Ts. Dr. Ahmad Ashraf bin Abdul Halim</h3>
+                                <div class="title">Senior Lecturer</div>
+                                <div>
+                                    <span class="expertise-tag">Optimization Algorithms</span>
+                                    <span class="expertise-tag">Combinatorial Testing</span>
+                                    <span class="expertise-tag">Software Testing</span>
+                                </div>
+                                <p style="margin-top: 1rem; color: var(--text-light); font-size: 0.95rem;">Leading researcher in AI optimization with 15+ years experience. Published over 80 papers in top-tier journals.</p>
+                                <a href="https://zamrizahir88.github.io/cv/main.html" class="profile-link" target="_blank">
+                                    <i class="fas fa-globe"></i> View Profile
+                                </a>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 
@@ -1340,6 +1392,44 @@
 
                         <div class="profile-card">
                             <div class="profile-img-container">
+                                <img src="C:/Users/DELL/Downloads/hazry.jpg" alt="Ali bin Ahmad" class="profile-img">
+                            </div>
+                            <div class="profile-content">
+                                <h3>Syed Muhammad Hazry Asraf Syed Abdul Rahim</h3>
+                                <div class="title">Master Student</div>
+                                <div>
+                                    <span class="expertise-tag">Augmented Reality</span>
+                                    <span class="expertise-tag">Virtual Reality</span>
+                                </div>
+                                <p style="margin-top: 1rem; color: var(--text-light); font-size: 0.95rem;"><strong>Supervisor:</strong> Assoc. Prof. Ts. Dr. Amiza Binti Amir, Assoc. Prof. Ir. Ts. Dr. Norylana Azemi, Prof. Soh Ping Jack</p>
+                                <p style="color: var(--text-light); font-size: 0.95rem;"><strong>Thesis:</strong> "Deep Learning Ambient Backscatter Wave Communication System For Human Activity Recognition"</p>
+                                <a href="https://aimanjitra.github.io/biodata/index.html" class="profile-link" target="_blank">
+                                    <i class="fas fa-globe"></i> Student Profile
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="profile-card">
+                            <div class="profile-img-container">
+                                <img src="C:/Users/DELL/Downloads/hazry.jpg" alt="Ali bin Ahmad" class="profile-img">
+                            </div>
+                            <div class="profile-content">
+                                <h3>Anjila J binti Suali</h3>
+                                <div class="title">PHD Student</div>
+                                <div>
+                                    <span class="expertise-tag">Software Testing</span>
+                                    <span class="expertise-tag">Combinatorial Testing</span>
+                                </div>
+                                <p style="margin-top: 1rem; color: var(--text-light); font-size: 0.95rem;"><strong>Supervisor:</strong> Assoc. Prof. Ts. Dr. Amiza Binti Amir, Assoc. Prof. Ir. Ts. Dr. Norylana Azemi, Prof. Soh Ping Jack</p>
+                                <p style="color: var(--text-light); font-size: 0.95rem;"><strong>Thesis:</strong> "Deep Learning Ambient Backscatter Wave Communication System For Human Activity Recognition"</p>
+                                <a href="https://aimanjitra.github.io/biodata/index.html" class="profile-link" target="_blank">
+                                    <i class="fas fa-globe"></i> Student Profile
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="profile-card">
+                            <div class="profile-img-container">
                                 <img src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Ali bin Ahmad" class="profile-img">
                             </div>
                             <div class="profile-content">
@@ -1348,6 +1438,44 @@
                                 <div>
                                     <span class="expertise-tag">Software Testing</span>
                                     <span class="expertise-tag">Combinatorial Testing</span>
+                                </div>
+                                <p style="margin-top: 1rem; color: var(--text-light); font-size: 0.95rem;"><strong>Supervisor:</strong> Prof. Dr. Norizan Mat Diah</p>
+                                <p style="color: var(--text-light); font-size: 0.95rem;"><strong>Thesis:</strong> "Hybrid Metaheuristic Algorithms for Complex Optimization Problems"</p>
+                                <a href="https://aimanjitra.github.io/biodata/index.html" class="profile-link" target="_blank">
+                                    <i class="fas fa-globe"></i> Student Profile
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="profile-card">
+                            <div class="profile-img-container">
+                                <img src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Ali bin Ahmad" class="profile-img">
+                            </div>
+                            <div class="profile-content">
+                                <h3>Murad Muhammad Hasan Salih Al-Walidi</h3>
+                                <div class="title">Master Student</div>
+                                <div>
+                                    <span class="expertise-tag">Software Testing</span>
+                                    <span class="expertise-tag">Combinatorial Testing</span>
+                                </div>
+                                <p style="margin-top: 1rem; color: var(--text-light); font-size: 0.95rem;"><strong>Supervisor:</strong> Prof. Dr. Norizan Mat Diah</p>
+                                <p style="color: var(--text-light); font-size: 0.95rem;"><strong>Thesis:</strong> "Hybrid Metaheuristic Algorithms for Complex Optimization Problems"</p>
+                                <a href="https://aimanjitra.github.io/biodata/index.html" class="profile-link" target="_blank">
+                                    <i class="fas fa-globe"></i> Student Profile
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="profile-card">
+                            <div class="profile-img-container">
+                                <img src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Ali bin Ahmad" class="profile-img">
+                            </div>
+                            <div class="profile-content">
+                                <h3>Md.Abu Jubaer Rupok</h3>
+                                <div class="title">Master Student</div>
+                                <div>
+                                    <span class="expertise-tag">Optical Fiber Communications</span>
+                                    <span class="expertise-tag">Computer Networks</span>
                                 </div>
                                 <p style="margin-top: 1rem; color: var(--text-light); font-size: 0.95rem;"><strong>Supervisor:</strong> Prof. Dr. Norizan Mat Diah</p>
                                 <p style="color: var(--text-light); font-size: 0.95rem;"><strong>Thesis:</strong> "Hybrid Metaheuristic Algorithms for Complex Optimization Problems"</p>
@@ -1369,70 +1497,69 @@
         <h2 class="section-title">Facility Booking</h2>
         
         <div class="booking-container">
-            <div class="booking-tables">
+            <div class="booking-tables" id="postgraduateSection" style="display:none;">
                 <h3 style="color: var(--primary-dark); margin-bottom: 1.5rem; font-size: 1.4rem;">Postgraduate Tables Layout</h3>
                 
                 <!-- Floor Plan Layout -->
-<div class="floor-plan">
+                <div class="floor-plan">
 
-    <!-- TOP -->
-    <div class="facility meeting">BILIK MEETING</div>
+                  <!-- TOP -->
+                  <div class="facility meeting">BILIK MEETING</div>
 
-    <!-- SECOND ROW -->
-    <div class="facility lounge">LOUNGE</div>
-    <div class="facility pantry">PANTRY</div>
+                  <!-- SECOND ROW -->
+                  <div class="facility lounge">LOUNGE</div>
+                  <div class="facility pantry">PANTRY</div>
 
-    <!-- INTERN ROWS -->
-    <div class="intern internL">INTERN STUDENTS</div>
-    <div class="intern internR">INTERN STUDENTS</div>
+                  <!-- INTERN ROWS -->
+                  <div class="intern internL">INTERN STUDENTS</div>
+                  <div class="intern internR">INTERN STUDENTS</div>
 
-    <div class="intern internL2">INTERN STUDENTS</div>
-    <div class="intern internR2">INTERN STUDENTS</div>
+                  <div class="intern internL2">INTERN STUDENTS</div>
+                  <div class="intern internR2">INTERN STUDENTS</div>
 
-    <!-- LEFT TABLES -->
-    <div class="table occupied l1">YAHYA (SV: DR. RUZEL) – PREVIA</div>
-    <div class="table intern l2">INTERN STUDENTS</div>
+                  <!-- LEFT TABLES -->
+                  <div class="table occupied l1">YAHYA (SV: DR. RUZEL) – PREVIA</div>
+                  <div class="table intern l2">INTERN STUDENTS</div>
 
-    <div class="table occupied l3">AIMAN (SV: DR. ZAMRI)</div>
-    <div class="table available l4"></div>
+                  <div class="table occupied l3">AIMAN (SV: DR. ZAMRI)</div>
+                  <div class="table available l4"></div>
 
-    <div class="table occupied l5">ACHMAD & RUPOK (SV: DR. RASHID)</div>
-    <div class="table occupied l6">HASNI & ROOBAN (SV: DR. MUZAMMIL)</div>
+                  <div class="table occupied l5">ACHMAD & RUPOK (SV: DR. RASHID)</div>
+                  <div class="table occupied l6">HASNI & ROOBAN (SV: DR. MUZAMMIL)</div>
 
-    <!-- RIGHT TABLES -->
-    <div class="table intern r1">INTERN STUDENTS</div>
-    <div class="table intern r2">INTERN STUDENTS</div>
+                  <!-- RIGHT TABLES -->
+                  <div class="table intern r1">INTERN STUDENTS</div>
+                  <div class="table intern r2">INTERN STUDENTS</div>
 
-    <div class="table occupied r3">HAZRY (SV: MDM. RUSNIDA)</div>
-    <div class="table occupied r4">MURAD (SV: DR. ASHRAF)</div>
+                  <div class="table occupied r3">HAZRY (SV: MDM. RUSNIDA)</div>
+                  <div class="table occupied r4">MURAD (SV: DR. ASHRAF)</div>
 
-    <div class="table occupied r5">LYDIA (STUDENT DR FAZRUL FAIZ)</div>
-    <div class="table available r6"></div>
+                  <div class="table occupied r5">LYDIA (STUDENT DR FAZRUL FAIZ)</div>
+                  <div class="table available r6"></div>
 
-    <!-- EXTRA LEFT (RED CIRCLE AREA) -->
-    <div class="table occupied l7">IRA (RA DR. ROZMIE)</div>
-    <div class="table available l8"></div>
+                  <!-- EXTRA LEFT (RED CIRCLE AREA) -->
+                  <div class="table occupied l7">IRA (RA DR. ROZMIE)</div>
+                  <div class="table available l8"></div>
 
-    <!-- EXTRA RIGHT (RED CIRCLE AREA) -->
-    <div class="table available r7"></div>
-    <div class="table occupied r8">SYAMIMI (SV: DR KU FAZIRA)</div>
+                  <!-- EXTRA RIGHT (RED CIRCLE AREA) -->
+                  <div class="table available r7"></div>
+                  <div class="table occupied r8">SYAMIMI (SV: DR KU FAZIRA)</div>
 
-    <div class="table occupied l9">ANJILA (SV: DR. NURA)</div>
-    <div class="table available l10"></div>
+                  <div class="table occupied l9">ANJILA (SV: DR. NURA)</div>
+                  <div class="table available l10"></div>
 
-    <div class="table available r9"></div>
-    <div class="table occupied r10">AFIFI (SV: DR AMIZA)</div>
+                  <div class="table available r9"></div>
+                  <div class="table occupied r10">AFIFI (SV: DR AMIZA)</div>
 
-    <div class="table available l11"></div>
-    <div class="table available l12"></div>
+                  <div class="table available l11"></div>
+                  <div class="table available l12"></div>
 
-    <!-- BOTTOM -->
-    <div class="facility surauP">SURAU PEREMPUAN</div>
-    <div class="printing">PRINTING AREA</div>
-    <div class="facility surauL">SURAU LELAKI</div>
+                  <!-- BOTTOM -->
+                  <div class="facility surauP">SURAU PEREMPUAN</div>
+                  <div class="printing">PRINTING AREA</div>
+                  <div class="facility surauL">SURAU LELAKI</div>
 
-</div>
-                
+                  </div>
                 <!-- Table Legend -->
                 <div style="display: flex; gap: 2rem; margin-top: 1rem; justify-content: center;">
                     <div style="display: flex; align-items: center; gap: 0.5rem;">
@@ -1444,8 +1571,9 @@
                         <span style="font-size: 0.9rem;">Booked</span>
                     </div>
                 </div>
+                </div>
                 
-                <!-- Meeting Room Visualization -->
+                <div class="booking-tables" id="meetingRoomSection" style="display:none;">
                 <h3 style="margin-top: 3rem; color: var(--primary-dark); margin-bottom: 1.5rem; font-size: 1.4rem;">Meeting Room Availability</h3>
                 <div style="display: flex; flex-direction: column; gap: 1.5rem;">
                     <!-- Meeting Room -->
@@ -1747,6 +1875,8 @@
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('bookingDate').value = today;
             document.getElementById('bookingDate').min = today;
+
+            toggleBookingType();
             
             // Add floating animation to hero elements
             const heroElements = document.querySelectorAll('.hero h2, .hero p, .hero .btn, .achievement-badge');
@@ -1775,7 +1905,36 @@
                 showResearchTab('lecturers');
             }
         }
-        
+        function toggleBookingType() {
+    const bookingType = document.getElementById('bookingType').value;
+    const postgraduateSection = document.getElementById('postgraduateSection');
+    const meetingRoomSection = document.getElementById('meetingRoomSection');
+    const tableSelectionGroup = document.getElementById('tableSelectionGroup');
+    const meetingTimeGroup = document.getElementById('meetingTimeGroup');
+
+    if (bookingType === 'postgraduate-table') {
+        postgraduateSection.style.display = 'block';
+        meetingRoomSection.style.display = 'none';
+
+        tableSelectionGroup.style.display = 'block';
+        meetingTimeGroup.style.display = 'none';
+    } 
+    else if (bookingType === 'meeting-room') {
+        postgraduateSection.style.display = 'none';
+        meetingRoomSection.style.display = 'block';
+
+        tableSelectionGroup.style.display = 'none';
+        meetingTimeGroup.style.display = 'block';
+    } 
+    else {
+        postgraduateSection.style.display = 'none';
+        meetingRoomSection.style.display = 'none';
+
+        tableSelectionGroup.style.display = 'none';
+        meetingTimeGroup.style.display = 'none';
+    }
+}
+
         function showResearchTab(tabName) {
             const tabs = document.querySelectorAll('.research-tab');
             tabs.forEach(tab => {
