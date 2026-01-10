@@ -1038,15 +1038,41 @@
             font-size: 0.9rem;
         }
 
-        /* Particle Background */
-        #particles-js {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: -2;
-        }
+        .icon-background {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.icon-background i {
+    position: absolute;
+    font-size: 3rem;
+    color: rgba(0, 0, 0, 0.15);
+    animation: floatIcon 5s linear infinite;
+}
+
+/* Random positioning */
+.icon-background i:nth-child(1) { left: 10%; animation-duration: 10s; font-size: 3.5rem; }
+.icon-background i:nth-child(2) { left: 30%; animation-duration: 12s; font-size: 2.8rem; }
+.icon-background i:nth-child(3) { left: 50%; animation-duration: 16s; font-size: 4rem; }
+.icon-background i:nth-child(4) { left: 65%; animation-duration: 10s; font-size: 3.2rem; }
+.icon-background i:nth-child(5) { left: 80%; animation-duration: 14s; font-size: 3.6rem; }
+.icon-background i:nth-child(6) { left: 90%; animation-duration: 18s; font-size: 2.5rem; }
+
+@keyframes floatIcon {
+    0% {
+        transform: translateY(110vh) rotate(0deg);
+        opacity: 0;
+    }
+    10% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+    100% {
+        transform: translateY(-120vh) rotate(360deg);
+        opacity: 0;
+    }
+}
 
         /* Scroll Progress Indicator */
         .scroll-progress {
@@ -1159,6 +1185,15 @@
     </style>
 </head>
 <body>
+
+  <div class="icon-background">
+    <i class="fas fa-laptop-code"></i>
+    <i class="fas fa-microchip"></i>
+    <i class="fas fa-network-wired"></i>
+    <i class="fas fa-satellite-dish"></i>
+    <i class="fas fa-server"></i>
+    <i class="fas fa-desktop"></i>
+</div>
     <!-- Floating Background Elements -->
     <div class="floating-elements">
         <div class="floating-element" style="width: 100px; height: 100px; top: 10%; left: 5%;"></div>
@@ -1741,47 +1776,7 @@
         </div>
     </footer>
 
-    <!-- Particle.js Library -->
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        // Initialize particles background
-        document.addEventListener('DOMContentLoaded', function() {
-            if (typeof particlesJS !== 'undefined') {
-                particlesJS('particles-js', {
-                    particles: {
-                        number: { value: 80, density: { enable: true, value_area: 800 } },
-                        color: { value: "#3b82f6" },
-                        shape: { type: "circle" },
-                        opacity: { value: 0.3, random: true },
-                        size: { value: 3, random: true },
-                        line_linked: {
-                            enable: true,
-                            distance: 150,
-                            color: "#3b82f6",
-                            opacity: 0.1,
-                            width: 1
-                        },
-                        move: {
-                            enable: true,
-                            speed: 2,
-                            direction: "none",
-                            random: true,
-                            straight: false,
-                            out_mode: "out",
-                            bounce: false
-                        }
-                    },
-                    interactivity: {
-                        detect_on: "canvas",
-                        events: {
-                            onhover: { enable: true, mode: "repulse" },
-                            onclick: { enable: true, mode: "push" }
-                        }
-                    },
-                    retina_detect: true
-                });
-            }
-        });
 
         // Scroll Progress Indicator
         window.addEventListener('scroll', function() {
