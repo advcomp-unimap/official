@@ -133,7 +133,12 @@
         const analytics = getAnalytics(app);
         const database = getDatabase(app);
 
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
         const userId = localStorage.getItem('userId');
+
+        if (isLoggedIn === 'true' && userId) {
+            window.location.href = "https://advcomp-unimap.github.io/admin/html";
+        }
 
         // Function to verify username and password
         function verifyUser(username, password) {
