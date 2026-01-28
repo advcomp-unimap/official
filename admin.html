@@ -13,6 +13,12 @@
     <!-- FullCalendar for calendar -->
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
     <style>
+
+        html, body {
+    width: 100%;
+    overflow-x: hidden; /* 🔥 CRITICAL */
+}
+
         :root {
             --primary-color: #2c3e50;
             --secondary-color: #3498db;
@@ -146,10 +152,11 @@
 
         /* Main Content Styles */
         .main-content {
-            margin-left: 250px;
-            padding: 20px;
-            min-height: 100vh;
-        }
+    margin-left: 250px;
+    padding: 20px;
+    min-height: 100vh;
+    width: calc(100% - 250px); /* 🔥 PREVENT OVERFLOW */
+}
 
         .top-bar {
             background-color: white;
@@ -188,14 +195,13 @@
 
         /* Card Styles */
         .dashboard-card {
-    min-height: calc(100vh - 180px); /* 🔥 KEY FIX */
+    padding: 20px;
 }
 
-
         .dashboard-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-        }
+    transform: none;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
 
         /* === FULL SIZE CALENDAR === */
         #calendar-container {
@@ -287,6 +293,8 @@
         }
 
         .floor-plan {
+            max-width: 100%;
+    overflow-x: auto;
     display: grid;
     grid-template-columns: 1fr 1fr 0.6fr 1fr 1fr;
     grid-template-areas:
@@ -314,6 +322,8 @@
 
 .desk {
   cursor: pointer;
+  word-break: break-word;
+    line-height: 1.1;
 }
 
 .desk.selected {
@@ -322,7 +332,7 @@
 
 /* === FLOOR PLAN BOX BORDER & CENTERING FIX === */
 .floor-plan > div {
-    border: 2px solid #0f172a;   /* BLACK BORDER */
+    border: 2px solid #0f172a;
     border-radius: 6px;
 
     display: flex;
@@ -333,8 +343,11 @@
     font-size: 0.85rem;
     font-weight: 600;
 
-    min-height: 60px;
+    height: 60px;          /* ✅ FIXED HEIGHT */
+    padding: 6px;
+    overflow: hidden;      /* ✅ PREVENT EXPANSION */
 }
+
 
 .meeting { grid-area: meeting; }
 .lounge { grid-area: lounge; }
@@ -398,11 +411,6 @@
 /* INTERN STUDENTS (PURPLE) */
 .intern {
     background: #c9bddc;
-}
-
-/* LECTURER / SPECIAL (ORANGE) */
-.table.occupied:has(span) {
-    background: #f6c28b;
 }
 
 /* FACILITIES */
@@ -882,82 +890,95 @@
         <!-- Financial Status Section -->
         <section id="finance" class="section-tabs">
             <div class="dashboard-card">
-                <div class="card-header">
-                    <h2><i class="fas fa-chart-line"></i> Financial Status</h2>
-                    <div class="action-buttons">
-                        <button class="btn btn-primary-custom" onclick="addPayment()">
-                            <i class="fas fa-plus"></i> Add Payment
-                        </button>
-                        <button class="btn btn-warning-custom" onclick="addExpense()">
-                            <i class="fas fa-minus"></i> Add Expense
-                        </button>
-                    </div>
-                </div>
                 
                 <!-- Student Payments -->
-                <h4 class="mt-4 mb-3">Student Payment Status</h4>
-                <div class="table-container mb-4">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Student ID</th>
-                                <th>Student Name</th>
-                                <th>Month</th>
-                                <th>Amount</th>
-                                <th>Payment Date</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>PG2024001</td>
-                                <td>John Doe</td>
-                                <td>March 2024</td>
-                                <td>$500.00</td>
-                                <td>Mar 15, 2024</td>
-                                <td><span class="status-badge status-paid">Paid</span></td>
-                            </tr>
-                            <tr>
-                                <td>PG2024002</td>
-                                <td>Jane Smith</td>
-                                <td>March 2024</td>
-                                <td>$500.00</td>
-                                <td>-</td>
-                                <td><span class="status-badge status-overdue">Overdue</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <h4 class="mt-4 mb-3">Monthly Contribution</h4>
+                <div class="row mb-3">
+                <div class="col-md-5">
+                    <input id="financeName" class="form-control" placeholder="Full Name">
+                </div>
+                <div class="col-md-4">
+                    <input id="financePosition" class="form-control" placeholder="Position (leave empty if none)">
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-success-custom w-100" onclick="saveFinanceMember()">Save</button>
+                </div>
                 </div>
 
+                <table class="data-table">
+                <thead>
+                    <tr>
+                    <th>No</th>
+                    <th>Full Name</th>
+                    <th>Position</th>
+                    <th>JAN</th><th>FEB</th><th>MAR</th><th>APR</th>
+                    <th>MAY</th><th>JUN</th><th>JUL</th><th>AUG</th>
+                    <th>SEP</th><th>OCT</th><th>NOV</th><th>DEC</th>
+                    <th>Total (RM)</th>
+                    <th>Action</th>
+                    </tr>
+                </thead>
+                <h4 id="financeYear">YEAR 2025</h4>
+                <tbody id="financeYearBody"></tbody>
+                </table>
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                <button class="btn btn-secondary" onclick="changeYear(-1)">⬅</button>
+                <button class="btn btn-secondary" onclick="changeYear(1)">➡</button>
+                </div>
+
+                <h5 class="mt-3">
+                Total Collected: RM <span id="financeGrandTotal">0</span>
+                </h5>
+
                 <!-- Expenses -->
-                <h4 class="mt-4 mb-3">Expenses</h4>
+                <!-- Expenses / Cashbook -->
+<h4 class="mt-4 mb-3">Expenses / Cashbook</h4>
+
+<div class="row mb-3">
+  <div class="col-md-2">
+    <input type="date" id="expDate" class="form-control">
+  </div>
+  <div class="col-md-3">
+    <input type="text" id="expDetail" class="form-control" placeholder="Detail (Expense)">
+  </div>
+  <div class="col-md-2">
+    <input type="number" id="expAmount" class="form-control" placeholder="Amount OUT">
+  </div>
+  <div class="col-md-2">
+    <input type="number" id="expIn" class="form-control" placeholder="Amount IN">
+  </div>
+  <div class="col-md-3">
+    <input type="text" id="expInDetail" class="form-control" placeholder="IN Detail (Source)">
+  </div>
+  <div class="col-md-2 mt-2">
+    <select id="expMethod" class="form-control">
+      <option value="">Method</option>
+      <option value="CASH">CASH</option>
+      <option value="TRANSFER">TRANSFER</option>
+    </select>
+  </div>
+  <div class="col-md-2 mt-2">
+    <button class="btn btn-success-custom w-100" onclick="saveExpense()">Save</button>
+  </div>
+</div>
+
                 <div class="table-container">
                     <table class="data-table">
                         <thead>
                             <tr>
-                                <th>Item</th>
-                                <th>Category</th>
-                                <th>Amount</th>
-                                <th>Date</th>
-                                <th>Purchased By</th>
+                            <th>No</th>
+                            <th>Date</th>
+                            <th>Detail</th>
+                            <th>Amount (RM)</th>
+                            <th>In (RM)</th>
+                            <th>In Detail</th>
+                            <th>Balance (RM)</th>
+                            <th>Method</th>
+                            <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>Lab Equipment</td>
-                                <td>Hardware</td>
-                                <td>$1,200.00</td>
-                                <td>Mar 10, 2024</td>
-                                <td>Admin</td>
-                            </tr>
-                            <tr>
-                                <td>Software License</td>
-                                <td>Software</td>
-                                <td>$300.00</td>
-                                <td>Mar 5, 2024</td>
-                                <td>Admin</td>
-                            </tr>
-                        </tbody>
+                        <tbody id="expenseBody"></tbody>
                     </table>
                 </div>
             </div>
@@ -1213,6 +1234,9 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
+let currentYear = new Date().getFullYear();
+const months = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+
 db.ref("tables").on("value", snap => {
   document.querySelectorAll(".desk").forEach(d => {
     d.classList.remove("available", "occupied", "intern");
@@ -1280,6 +1304,49 @@ function updateCalendarEventInFirebase(date, newData) {
 function deleteCalendarEventFromFirebase(date) {
   const month = date.slice(0, 7);
   db.ref(`calendar/${month}/${date}`).remove();
+}
+
+let editingExpenseId = null;
+
+function saveExpense() {
+  const rawDate = expDate.value;
+  if (!rawDate) {
+    alert("Please select a date");
+    return;
+  }
+
+  const [y, m, d] = rawDate.split("-");
+  const dateDisplay = `${d}/${m}/${y}`;
+
+  const detail = expDetail.value.trim();
+  const amount = Number(expAmount.value || 0);
+  const moneyIn = Number(expIn.value || 0);
+  const inDetail = expInDetail.value.trim();
+  const method = expMethod.value;
+
+  // 🔒 Require IN detail
+  if (moneyIn > 0 && !inDetail) {
+    alert("Please enter IN detail (source of money)");
+    return;
+  }
+
+  const data = {
+    dateISO: rawDate,
+    dateDisplay,
+    detail,
+    amount,
+    in: moneyIn,
+    inDetail,
+    method
+  };
+
+  const ref = editingExpenseId
+    ? db.ref(`expenses/${editingExpenseId}`)
+    : db.ref("expenses").push();
+
+  ref.set(data).then(() => {
+    clearExpenseForm();
+  });
 }
 
 function loadNotifications() {
@@ -1620,6 +1687,82 @@ statusSelect.addEventListener("change", updateOwnerVisibility);
 // Run on page load
 updateOwnerVisibility();
 
+function loadExpenses() {
+  const body = document.getElementById("expenseBody");
+  body.innerHTML = "";
+
+  let balance = 0;
+  let i = 1;
+
+  db.ref("expenses")
+    .orderByChild("dateISO")
+    .on("value", snap => {
+      body.innerHTML = "";
+      balance = 0;
+      i = 1;
+
+      if (!snap.exists()) return;
+
+      Object.entries(snap.val()).forEach(([id, e]) => {
+        balance += (e.in || 0) - (e.amount || 0);
+
+        body.innerHTML += `
+          <tr>
+            <td>${i++}</td>
+            <td>${e.dateDisplay}</td>
+            <td>${e.detail}</td>
+            <td>${(e.amount || 0).toFixed(2)}</td>
+            <td>${(e.in || 0).toFixed(2)}</td>
+            <td>${e.inDetail || "-"}</td>
+            <td><strong>${balance.toFixed(2)}</strong></td>
+            <td>${e.method || "-"}</td>
+            <td>
+              <button class="btn btn-primary-custom btn-sm"
+                onclick="editExpense('${id}')">Edit</button>
+              <button class="btn btn-danger-custom btn-sm"
+                onclick="deleteExpense('${id}')">Delete</button>
+            </td>
+          </tr>
+        `;
+      });
+    });
+}
+
+function editExpense(id) {
+  db.ref(`expenses/${id}`).once("value", snap => {
+    if (!snap.exists()) return;
+
+    const e = snap.val();
+    editingExpenseId = id;
+
+    expDate.value = e.dateISO;
+    expDetail.value = e.detail;
+    expAmount.value = e.amount;
+    expIn.value = e.in;
+    expInDetail.value = e.inDetail;
+    expMethod.value = e.method;
+  });
+}
+
+function deleteExpense(id) {
+  if (!confirm("Delete this record?")) return;
+  db.ref(`expenses/${id}`).remove().then(loadExpenses);
+}
+
+function clearExpenseForm() {
+  editingExpenseId = null;
+
+  expDate.value = "";
+  expDetail.value = "";
+  expAmount.value = "";
+
+  expIn.value = "";          // 🔥 VERY IMPORTANT
+  expInDetail.value = "";   // 🔥 VERY IMPORTANT
+
+  expMethod.value = "";
+}
+
+
         // Attendance functions
         function markAttendance() {
             document.getElementById('attendanceDate').valueAsDate = new Date();
@@ -1637,23 +1780,170 @@ updateOwnerVisibility();
             // In real implementation, generate and download CSV
         }
 
-        // Finance functions
-        function addPayment() {
-            alert('Add payment form will open here');
+        function saveFinanceMember() {
+        const name = financeName.value.trim();
+        const position = financePosition.value.trim();
+
+        if (!name) {
+            alert("Name is required");
+            return;
         }
 
-        function addExpense() {
-            alert('Add expense form will open here');
+        const ref = db.ref(`finance/${currentYear}`).push();
+
+        ref.set({
+            name,
+            position,
+            graduateMonth: null,
+            payments: {}
+        });
+
+        financeName.value = "";
+        financePosition.value = "";
+
+        loadFinanceYear();
         }
 
-        // Booking functions
-        function newBooking() {
-            alert('New booking form will open here');
+
+        function changeYear(step) {
+        currentYear += step;
+        document.getElementById("financeYear").textContent = "YEAR " + currentYear;
+        loadFinanceYear();
         }
 
-        // Post functions
-        function newPost() {
-            alert('New post form will open here');
+        function loadFinanceYear() {
+        const tbody = document.getElementById("financeYearBody");
+        tbody.innerHTML = "";
+
+        let grandTotal = 0;
+
+        ensureYearData(currentYear, () => {
+        db.ref(`finance/${currentYear}`).once("value", snap => {
+            if (!snap.exists()) return;
+
+            let i = 1;
+
+            Object.entries(snap.val()).forEach(([id, m]) => {
+
+            // ❌ hide if already graduated in previous year
+            if (m.graduateYear && m.graduateYear < currentYear) return;
+
+            const fee = m.position ? 5 : 10;
+            let total = 0;
+
+            const monthCells = months.map(mon => {
+                const state = m.payments?.[mon] ?? 0;
+                if (state === 1) total += fee;
+
+                return `
+                <td>
+                    <button class="btn btn-sm ${getPaymentClass(state)}"
+                    onclick="cyclePayment('${id}','${mon}',${state})">
+                    ${getPaymentLabel(state)}
+                    </button>
+                </td>
+                `;
+            }).join("");
+
+            grandTotal += total;
+
+            tbody.innerHTML += `
+                <tr>
+                <td>${i++}</td>
+                <td>${m.name}</td>
+                <td>${m.position || "-"}</td>
+                ${monthCells}
+                <td><strong>${total}</strong></td>
+                <td>
+                    <button class="btn btn-danger-custom btn-sm"
+                    onclick="deleteFinanceMember('${id}')">Delete</button>
+                </td>
+                </tr>
+            `;
+            });
+
+            document.getElementById("financeGrandTotal").textContent = grandTotal;
+        });
+        });
+        }
+
+        function ensureYearData(year, callback) {
+        db.ref(`finance/${year}`).once("value", snap => {
+            if (snap.exists()) {
+            callback();
+            return;
+            }
+
+            // look for previous year
+            const prevYear = year - 1;
+
+            db.ref(`finance/${prevYear}`).once("value", prevSnap => {
+            if (!prevSnap.exists()) {
+                callback(); // nothing to copy
+                return;
+            }
+
+            const updates = {};
+
+            Object.entries(prevSnap.val()).forEach(([id, m]) => {
+                // skip graduated members
+                if (m.graduateYear && m.graduateYear <= prevYear) return;
+
+                updates[`finance/${year}/${id}`] = {
+                name: m.name,
+                position: m.position || "",
+                graduateYear: m.graduateYear || null,
+                graduateMonth: m.graduateMonth || null,
+                payments: {} // reset payments
+                };
+            });
+
+            db.ref().update(updates).then(callback);
+            });
+        });
+        }
+
+        function getPaymentLabel(state) {
+        if (state === 1) return "✔ Paid";
+        if (state === 2) return "🎓 Done";
+        return "—";
+        }
+
+        function getPaymentClass(state) {
+        if (state === 1) return "btn-success";
+        if (state === 2) return "btn-secondary";
+        return "btn-outline-danger";
+        }
+
+        function cyclePayment(id, month, currentState) {
+        let nextState = currentState === 0 ? 1 :
+                        currentState === 1 ? 2 : 0;
+
+        const updates = {};
+        const monthIndex = months.indexOf(month);
+
+        // DONE → auto mark future months
+        if (nextState === 2) {
+            months.slice(monthIndex).forEach(m => {
+            updates[`finance/${currentYear}/${id}/payments/${m}`] = 2;
+            });
+
+            updates[`finance/${currentYear}/${id}/graduateMonth`] = month;
+            updates[`finance/${currentYear}/${id}/graduateYear`] = currentYear;
+
+            db.ref().update(updates).then(loadFinanceYear);
+            return;
+        }
+
+        db.ref(`finance/${currentYear}/${id}/payments/${month}`)
+            .set(nextState)
+            .then(loadFinanceYear);
+        }
+
+        function deleteFinanceMember(id) {
+        if (!confirm("Delete this member?")) return;
+        db.ref(`finance/${currentYear}/${id}`).remove()
+            .then(loadFinanceYear);
         }
 
         // Logout function
@@ -1860,6 +2150,12 @@ document.querySelectorAll('.desk').forEach(desk => {
       updateOwnerVisibility(); // 👈 ADD THIS LINE
     });
   });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("financeYear").textContent = "YEAR " + currentYear;
+  loadFinanceYear();
+  loadExpenses()
 });
 
     </script>
