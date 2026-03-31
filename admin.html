@@ -3314,6 +3314,40 @@ function changeExpensePage(step) {
   renderExpensePage();
 }
 
+function updateDashboardBookingSummary() {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const pendingMeeting = dashboardState.meetingBookings.filter(
+    booking => booking.status !== "approved"
+  ).length;
+
+  const upcomingApprovedMeeting = dashboardState.meetingBookings.filter(booking => {
+    if (booking.status !== "approved" || !booking.date) return false;
+    const bookingDate = new Date(booking.date);
+    if (Number.isNaN(bookingDate.getTime())) return false;
+    bookingDate.setHours(0, 0, 0, 0);
+    return bookingDate >= today;
+  }).length;
+
+  const pendingTable = dashboardState.tableBookings.filter(
+    booking => booking.status !== "approved"
+  ).length;
+
+  const visibleCount = pendingMeeting + pendingTable + upcomingApprovedMeeting;
+
+  setDashboardText("dashboardBookingCount", visibleCount);
+
+  let meta = "Nothing waiting";
+  if (pendingMeeting + pendingTable > 0) {
+    meta = `${pluralize(pendingMeeting + pendingTable, "request")} pending`;
+  } else if (upcomingApprovedMeeting > 0) {
+    meta = `${pluralize(upcomingApprovedMeeting, "upcoming approved meeting", "upcoming approved meetings")}`;
+  }
+
+  setDashboardText("dashboardBookingMeta", meta);
+}
+
 function editExpense(id) {
   db.ref(`expenses/${id}`).once("value", snap => {
     if (!snap.exists()) return;
@@ -3568,10 +3602,7 @@ function loadAdminBookings() {
     dashboardState.meetingBookings = [];
 
     if (!snap.exists()) {
-      const totalPending =
-        dashboardState.meetingBookings.length + dashboardState.tableBookings.length;
-      setDashboardText("dashboardBookingCount", totalPending);
-      setDashboardText("dashboardBookingMeta", "Nothing waiting");
+      updateDashboardBookingSummary();
       renderDashboardNotifications();
       return;
     }
@@ -3584,13 +3615,7 @@ function loadAdminBookings() {
       addMeetingBookingRow(id, b);
     });
 
-    const totalPending =
-      dashboardState.meetingBookings.length + dashboardState.tableBookings.length;
-    setDashboardText("dashboardBookingCount", totalPending);
-    setDashboardText(
-      "dashboardBookingMeta",
-      totalPending ? `${pluralize(totalPending, "request")} pending` : "Nothing waiting"
-    );
+    updateDashboardBookingSummary();
     renderDashboardNotifications();
   });
 
@@ -3602,13 +3627,7 @@ function loadAdminBookings() {
     dashboardState.tableBookings = [];
 
     if (!snap.exists()) {
-      const totalPending =
-        dashboardState.meetingBookings.length + dashboardState.tableBookings.length;
-      setDashboardText("dashboardBookingCount", totalPending);
-      setDashboardText(
-        "dashboardBookingMeta",
-        totalPending ? `${pluralize(totalPending, "request")} pending` : "Nothing waiting"
-      );
+      updateDashboardBookingSummary();
       renderDashboardNotifications();
       return;
     }
@@ -3619,13 +3638,7 @@ function loadAdminBookings() {
       addTableBookingRow(id, b);
     });
 
-    const totalPending =
-      dashboardState.meetingBookings.length + dashboardState.tableBookings.length;
-    setDashboardText("dashboardBookingCount", totalPending);
-    setDashboardText(
-      "dashboardBookingMeta",
-      totalPending ? `${pluralize(totalPending, "request")} pending` : "Nothing waiting"
-    );
+    updateDashboardBookingSummary();
     renderDashboardNotifications();
   });
 }
