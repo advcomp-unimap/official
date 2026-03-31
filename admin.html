@@ -31,6 +31,9 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f5f7fa;
+            margin: 0;
+            padding-left: 250px;
+            box-sizing: border-box;
         }
 
         /* Sidebar Styles */
@@ -157,9 +160,13 @@
 
         /* Main Content Styles */
         .main-content {
-  margin-left: 250px;
+  margin-left: 0;
   padding: 20px;
-  width: calc(100% - 250px);
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 #tables .dashboard-card {
@@ -524,10 +531,19 @@
         /* Tabs Navigation */
         .section-tabs {
             display: none;
+            width: 100%;
+            min-width: 0;
         }
 
         .section-tabs.active {
             display: block;
+        }
+
+        #tables {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            overflow-x: hidden;
         }
 
         /* Stats Cards */
@@ -586,8 +602,863 @@
             color: #6c757d;
         }
 
+        .dashboard-hero {
+            background: linear-gradient(135deg, #16324f 0%, #285b7a 55%, #7ab6d9 100%);
+            border-radius: 24px;
+            color: white;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 18px 40px rgba(22, 50, 79, 0.18);
+        }
+
+        .dashboard-hero h2 {
+            margin: 0 0 10px;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .dashboard-hero p {
+            margin: 0;
+            max-width: 720px;
+            color: rgba(255, 255, 255, 0.86);
+        }
+
+        .hero-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.14);
+            backdrop-filter: blur(10px);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 2fr) minmax(320px, 1fr);
+            gap: 24px;
+            align-items: start;
+        }
+
+        .dashboard-panel {
+            background: white;
+            border-radius: 18px;
+            padding: 22px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.07);
+        }
+
+        .dashboard-panel h3 {
+            margin: 0 0 18px;
+            font-size: 1.25rem;
+            color: var(--primary-color);
+        }
+
+        .dashboard-module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 18px;
+        }
+
+        .module-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 18px;
+            padding: 20px;
+            color: white;
+            min-height: 190px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-decoration: none;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            box-shadow: 0 14px 28px rgba(15, 23, 42, 0.12);
+        }
+
+        .module-card:hover {
+            transform: translateY(-4px);
+            color: white;
+        }
+
+        .module-card::after {
+            content: "";
+            position: absolute;
+            inset: auto -30px -60px auto;
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .module-card.minutes-card { background: linear-gradient(135deg, #0f766e, #14b8a6); }
+        .module-card.attendance-card { background: linear-gradient(135deg, #2563eb, #60a5fa); }
+        .module-card.finance-card { background: linear-gradient(135deg, #92400e, #f59e0b); }
+        .module-card.calendar-card { background: linear-gradient(135deg, #7c2d12, #fb7185); }
+        .module-card.booking-card { background: linear-gradient(135deg, #5b21b6, #a78bfa); }
+        .module-card.tables-card { background: linear-gradient(135deg, #1f2937, #4b5563); }
+        .module-card.attachment-card { background: linear-gradient(135deg, #065f46, #34d399); }
+
+        .module-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .module-card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        .module-card-label {
+            font-size: 0.88rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            opacity: 0.82;
+            margin-bottom: 10px;
+        }
+
+        .module-card-value {
+            font-size: 2rem;
+            line-height: 1;
+            font-weight: 700;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .module-card-desc,
+        .module-card-meta {
+            position: relative;
+            z-index: 1;
+        }
+
+        .module-card-desc {
+            margin: 0 0 12px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
+        }
+
+        .module-card-meta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .notification-stack,
+        .glance-list {
+            display: grid;
+            gap: 14px;
+        }
+
+        .notification-item,
+        .glance-item {
+            border: 1px solid #e5edf5;
+            border-radius: 16px;
+            padding: 16px;
+            background: #f9fbfd;
+        }
+
+        .notification-item {
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .notification-item.urgent {
+            border-left-color: var(--danger-color);
+            background: #fff7f7;
+        }
+
+        .notification-item.warning {
+            border-left-color: var(--warning-color);
+            background: #fffaf1;
+        }
+
+        .notification-title,
+        .glance-title {
+            margin: 0 0 6px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .notification-meta,
+        .glance-meta {
+            font-size: 0.86rem;
+            color: #64748b;
+            margin-top: 8px;
+        }
+
+        .notification-empty {
+            border: 1px dashed #cbd5e1;
+            border-radius: 16px;
+            padding: 24px 18px;
+            text-align: center;
+            color: #64748b;
+            background: #f8fafc;
+        }
+
+        .notification-slider {
+            display: grid;
+            gap: 12px;
+        }
+
+        .notification-slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .notification-slider-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .notification-nav {
+            width: 38px;
+            height: 38px;
+            border: 1px solid #d7e4ef;
+            border-radius: 50%;
+            background: white;
+            color: #334e68;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .notification-nav:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        .notification-counter {
+            font-size: 0.85rem;
+            color: #64748b;
+            font-weight: 700;
+            min-width: 48px;
+            text-align: center;
+        }
+
+        .notification-stage {
+            min-height: 190px;
+        }
+
+        .notification-stage .notification-item,
+        .notification-stage .notification-empty {
+            height: 100%;
+            min-height: 190px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .notification-body {
+            color: #334e68;
+            line-height: 1.5;
+        }
+
+        .notification-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .notification-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #d9e4ef;
+        }
+
+        .notification-dot.active {
+            background: var(--secondary-color);
+            transform: scale(1.15);
+        }
+
+        .glance-value {
+            display: block;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .quick-action-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .quick-action-chip {
+            border: 1px solid #d6e1ea;
+            border-radius: 999px;
+            padding: 10px 14px;
+            background: white;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .quick-action-chip:hover {
+            background: var(--light-bg);
+            color: var(--primary-color);
+        }
+
+        .table-management-shell {
+            background: linear-gradient(180deg, #f8fbff 0%, #eef4f9 100%);
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+            margin-left: 0;
+            margin-right: 0;
+            box-sizing: border-box;
+            position: relative;
+            left: 0;
+        }
+
+        .table-management-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 22px;
+            flex-wrap: wrap;
+        }
+
+        .table-management-header h2 {
+            margin: 0 0 8px;
+            color: #102a43;
+        }
+
+        .table-management-header p {
+            margin: 0;
+            color: #52606d;
+            max-width: 640px;
+        }
+
+        .table-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(120px, 1fr));
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .table-summary-card {
+            background: rgba(255, 255, 255, 0.88);
+            border: 1px solid #d8e5ef;
+            border-radius: 18px;
+            padding: 14px;
+            text-align: center;
+        }
+
+        .table-summary-card strong {
+            display: block;
+            font-size: 1.4rem;
+            color: #102a43;
+            line-height: 1.1;
+        }
+
+        .table-summary-card span {
+            font-size: 0.84rem;
+            color: #627d98;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .table-management-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 22px;
+            align-items: start;
+        }
+
+        .table-board,
+        .table-inspector {
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid #d8e5ef;
+            border-radius: 22px;
+            padding: 20px;
+            min-width: 0;
+        }
+
+        .table-board {
+            overflow: hidden;
+        }
+
+        .table-board-scroll {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+            overflow-y: hidden;
+            padding-bottom: 6px;
+        }
+
+        .table-board-header,
+        .table-inspector-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .table-board-header h3,
+        .table-inspector-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: #102a43;
+        }
+
+        .table-board-header p,
+        .table-inspector-header p {
+            margin: 4px 0 0;
+            color: #627d98;
+            font-size: 0.92rem;
+        }
+
+        .table-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .table-legend-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: #f8fafc;
+            border: 1px solid #dbe7f0;
+            color: #486581;
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+
+        .table-legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .table-legend-dot.available-dot { background: #98d9a1; }
+        .table-legend-dot.occupied-dot { background: #f3a5ae; }
+        .table-legend-dot.intern-dot { background: #cdbce7; }
+        .table-legend-dot.facility-dot { background: #d9e2ec; }
+
+        .floor-plan {
+            background:
+              radial-gradient(circle at top left, rgba(58, 141, 222, 0.08), transparent 34%),
+              linear-gradient(180deg, #f8fbff 0%, #edf4fa 100%);
+            border: 1px solid #d6e3ee;
+            border-radius: 22px;
+            padding: 16px;
+            width: 100%;
+            min-width: 0;
+            max-width: 100%;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: minmax(92px, 1fr) minmax(92px, 1fr) minmax(42px, 0.45fr) minmax(92px, 1fr) minmax(92px, 1fr);
+            grid-template-areas:
+            "meeting meeting meeting meeting meeting"
+            "lounge lounge . pantry pantry"
+            "internL internL . internR internR"
+            "internL2 internL2 . internR2 internR2"
+            "l1 l2 . r1 r2"
+            "l3 l4 . r3 r4"
+            "l5 l6 . r5 r6"
+            "l7 l8 . r7 r8"
+            "l9 l10 . r9 r10"
+            "l11 l12 . . ."
+            "surauP surauP print surauL surauL";
+            gap: 12px;
+            margin-top: 0;
+        }
+
+        .floor-plan > div {
+            border: 1px solid #bfd2e1;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 0.84rem;
+            font-weight: 700;
+            min-height: 64px;
+            padding: 8px 6px;
+            overflow: hidden;
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.05);
+            transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+        }
+
+        .floor-plan > div:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 24px rgba(15, 23, 42, 0.09);
+        }
+
+        .desk {
+            cursor: pointer;
+            word-break: break-word;
+            line-height: 1.2;
+            color: #102a43;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+            flex-direction: column;
+            align-items: stretch !important;
+            justify-content: space-between !important;
+            text-align: left !important;
+            min-height: 92px !important;
+            padding: 10px !important;
+        }
+
+        .desk.selected {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18), 0 16px 26px rgba(37, 99, 235, 0.18);
+            transform: translateY(-2px);
+        }
+
+        .facility,
+        .printing {
+            background: linear-gradient(180deg, #f8fafc 0%, #e9f0f6 100%);
+            color: #334e68;
+        }
+
+        .available {
+            background: linear-gradient(180deg, #eaf8eb 0%, #cfeecf 100%);
+        }
+
+        .occupied {
+            background: linear-gradient(180deg, #fdeced 0%, #f7c5cb 100%);
+        }
+
+        .intern {
+            background: linear-gradient(180deg, #f3edfb 0%, #dcccf3 100%);
+        }
+
+        .booked {
+            background: linear-gradient(180deg, #fff8dc 0%, #ffe59c 100%);
+        }
+
+        .desk-card-top,
+        .desk-card-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .desk-card-top {
+            align-items: flex-start;
+        }
+
+        .desk-code {
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            color: #486581;
+        }
+
+        .desk-status-chip {
+            font-size: 0.58rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 4px 7px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.7);
+            color: #334e68;
+            white-space: nowrap;
+        }
+
+        .desk-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.72);
+            color: #102a43;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+            font-size: 0.82rem;
+        }
+
+        .desk-meta {
+            display: grid;
+            gap: 3px;
+            width: 100%;
+        }
+
+        .desk-title {
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: #102a43;
+            line-height: 1.15;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .desk-subtitle {
+            font-size: 0.68rem;
+            color: #52606d;
+            font-weight: 600;
+        }
+
+        .table-inspector-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: #eff6ff;
+            color: #1d4ed8;
+            font-weight: 700;
+            font-size: 0.88rem;
+        }
+
+        .table-selected-box {
+            border: 1px dashed #bfd2e1;
+            border-radius: 18px;
+            padding: 18px;
+            margin-bottom: 18px;
+            background: #f8fbff;
+        }
+
+        .table-selected-box strong {
+            display: block;
+            font-size: 1.1rem;
+            color: #102a43;
+            margin-bottom: 6px;
+        }
+
+        .table-selected-box span {
+            color: #627d98;
+            font-size: 0.92rem;
+        }
+
+        .table-inspector label {
+            font-weight: 700;
+            color: #243b53;
+            margin-bottom: 8px;
+        }
+
+        .table-inspector .form-control {
+            border-radius: 14px;
+            border: 1px solid #cbd8e6;
+            padding: 12px 14px;
+        }
+
+        .table-inspector {
+            max-width: 100%;
+        }
+
+        .table-save-btn {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 14px;
+            font-weight: 700;
+        }
+
+        .attachment-shell {
+            display: grid;
+            gap: 18px;
+            padding: 0 20px 20px;
+            box-sizing: border-box;
+        }
+
+        .attachment-hero {
+            background: white;
+            border-radius: 16px;
+            padding: 20px 22px;
+            box-shadow: none;
+            display: grid;
+            grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.9fr);
+            gap: 18px;
+            align-items: stretch;
+            border: 1px solid #eef2f6;
+        }
+
+        .attachment-hero-copy {
+            display: grid;
+            align-content: start;
+            gap: 10px;
+        }
+
+        .attachment-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            width: fit-content;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: #f4f8fb;
+            color: #486581;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+        }
+
+        .attachment-hero h2 {
+            margin: 0;
+            font-size: 1.65rem;
+            color: var(--primary-color);
+        }
+
+        .attachment-hero p {
+            margin: 0;
+            max-width: 620px;
+            color: #64748b;
+            line-height: 1.55;
+        }
+
+        .attachment-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            align-content: stretch;
+        }
+
+        .attachment-summary-card {
+            background: #f8fbfd;
+            border: 1px solid #dbe7f0;
+            border-radius: 14px;
+            padding: 14px 16px;
+        }
+
+        .attachment-summary-card strong {
+            display: block;
+            font-size: 1.45rem;
+            line-height: 1.1;
+            color: var(--primary-color);
+        }
+
+        .attachment-summary-card span {
+            display: block;
+            margin-top: 4px;
+            font-size: 0.74rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: #64748b;
+        }
+
+        .attachment-table-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px 22px;
+            box-shadow: none;
+            border: 1px solid #eef2f6;
+        }
+
+        .attachment-table-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .attachment-table-head h3 {
+            margin: 0;
+            color: var(--primary-color);
+        }
+
+        .attachment-table-head p {
+            margin: 4px 0 0;
+            color: #64748b;
+        }
+
+        .attachment-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-radius: 999px;
+            background: #f4f8fb;
+            color: #486581;
+            font-weight: 700;
+        }
+
+        #attachment .data-table thead th {
+            background: #f5fbff;
+        }
+
+        #attachment .table-container {
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .cashbook-shell {
+            border: 1px solid #e7edf4;
+            border-radius: 14px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .cashbook-shell .data-table thead th {
+            background: #f8fbfd;
+        }
+
+        .cashbook-pager {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            border-top: 1px solid #e7edf4;
+            background: #fbfdff;
+        }
+
+        .cashbook-page-info {
+            font-size: 0.9rem;
+            color: #64748b;
+            font-weight: 700;
+        }
+
+        .cashbook-pager-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #attachment .data-table tbody tr {
+            transition: background-color 0.2s ease;
+        }
+
+        #attachment .data-table tbody tr:hover {
+            background: #f8fcff;
+        }
+
         /* Responsive Styles */
         @media (max-width: 992px) {
+            body {
+                padding-left: 0;
+            }
+
             .sidebar {
                 transform: translateX(-100%);
             }
@@ -598,10 +1469,47 @@
 
             .main-content {
                 margin-left: 0;
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .dashboard-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .table-management-header,
+            .table-management-grid {
+                display: grid;
+                grid-template-columns: 1fr;
+            }
+
+            .table-summary-grid {
+                min-width: 0;
             }
 
             .menu-toggle {
                 display: block !important;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .floor-plan {
+                grid-template-columns: minmax(78px, 1fr) minmax(78px, 1fr) minmax(28px, 0.32fr) minmax(78px, 1fr) minmax(78px, 1fr);
+                padding: 12px;
+                gap: 10px;
+            }
+
+            .desk {
+                min-height: 84px !important;
+                padding: 8px !important;
+            }
+
+            .attachment-summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .attachment-hero {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -615,6 +1523,10 @@
 
         /* Print Styles */
         @media print {
+            body {
+                padding-left: 0;
+            }
+
             .sidebar, .top-bar, .action-buttons {
                 display: none !important;
             }
@@ -702,88 +1614,165 @@
 
         <!-- Dashboard Overview (Default Section) -->
         <section id="dashboard" class="section-tabs active">
-            <!-- Stats Overview -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon meeting">
-                        <i class="fas fa-file-contract"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>12</h3>
-                        <p>Meeting Minutes</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon attendance">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>45</h3>
-                        <p>Today's Attendance</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon finance">
-                        <i class="fas fa-money-bill-wave"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>8</h3>
-                        <p>Pending Payments</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon booking">
-                        <i class="fas fa-calendar-plus"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>5</h3>
-                        <p>Pending Bookings</p>
-                    </div>
+            <div class="dashboard-hero">
+                <h2>Operations dashboard for daily lab management</h2>
+                <p>
+                    Reveal every key area in one place: meeting minutes, attendance, financial status,
+                    calendar planning, booking approvals, table management, student attachment applications,
+                    and reminders whenever someone registers or sends important information.
+                </p>
+                <div class="hero-badges">
+                    <span class="hero-badge"><i class="fas fa-bell"></i> Live reminders</span>
+                    <span class="hero-badge"><i class="fas fa-layer-group"></i> 7 operational modules</span>
+                    <span class="hero-badge"><i class="fas fa-users-cog"></i> Admin-ready overview</span>
                 </div>
             </div>
 
-            <!-- Recent Activity -->
-            <div class="dashboard-card">
-                <div class="card-header">
-                    <h2><i class="fas fa-history"></i> Recent Activity</h2>
+            <div class="dashboard-layout">
+                <div class="dashboard-panel">
+                    <h3><i class="fas fa-border-all"></i> Core Modules</h3>
+                    <div class="dashboard-module-grid">
+                        <a href="#minutes" class="module-card minutes-card" onclick="showSection('minutes')">
+                            <div class="module-card-top">
+                                <div>
+                                    <div class="module-card-label">Meeting Minutes</div>
+                                    <div class="module-card-value" id="dashboardMinutesCount">0</div>
+                                </div>
+                                <div class="module-card-icon"><i class="fas fa-file-lines"></i></div>
+                            </div>
+                            <div>
+                                <p class="module-card-desc">Track latest records and keep meeting documentation easy to review.</p>
+                                <span class="module-card-meta" id="dashboardMinutesMeta"><i class="fas fa-clock"></i> Ready to update</span>
+                            </div>
+                        </a>
+
+                        <a href="#attendance" class="module-card attendance-card" onclick="showSection('attendance')">
+                            <div class="module-card-top">
+                                <div>
+                                    <div class="module-card-label">Attendance</div>
+                                    <div class="module-card-value" id="dashboardAttendanceCount">0</div>
+                                </div>
+                                <div class="module-card-icon"><i class="fas fa-user-check"></i></div>
+                            </div>
+                            <div>
+                                <p class="module-card-desc">See today’s attendance activity and jump straight into manual updates.</p>
+                                <span class="module-card-meta" id="dashboardAttendanceMeta"><i class="fas fa-clipboard-check"></i> Manual log ready</span>
+                            </div>
+                        </a>
+
+                        <a href="#finance" class="module-card finance-card" onclick="showSection('finance')">
+                            <div class="module-card-top">
+                                <div>
+                                    <div class="module-card-label">Financial Status</div>
+                                    <div class="module-card-value" id="dashboardFinanceCount">RM 0.00</div>
+                                </div>
+                                <div class="module-card-icon"><i class="fas fa-wallet"></i></div>
+                            </div>
+                            <div>
+                                <p class="module-card-desc">Monitor running balance and contribution activity from the finance section.</p>
+                                <span class="module-card-meta" id="dashboardFinanceMeta"><i class="fas fa-receipt"></i> No transactions yet</span>
+                            </div>
+                        </a>
+
+                        <a href="#calendar" class="module-card calendar-card" onclick="showSection('calendar')">
+                            <div class="module-card-top">
+                                <div>
+                                    <div class="module-card-label">Calendar</div>
+                                    <div class="module-card-value" id="dashboardCalendarCount">0</div>
+                                </div>
+                                <div class="module-card-icon"><i class="fas fa-calendar-days"></i></div>
+                            </div>
+                            <div>
+                                <p class="module-card-desc">Highlight upcoming events, planned sessions, and shared admin deadlines.</p>
+                                <span class="module-card-meta" id="dashboardCalendarMeta"><i class="fas fa-calendar-week"></i> No events scheduled</span>
+                            </div>
+                        </a>
+
+                        <a href="#booking" class="module-card booking-card" onclick="showSection('booking')">
+                            <div class="module-card-top">
+                                <div>
+                                    <div class="module-card-label">Booking System</div>
+                                    <div class="module-card-value" id="dashboardBookingCount">0</div>
+                                </div>
+                                <div class="module-card-icon"><i class="fas fa-calendar-check"></i></div>
+                            </div>
+                            <div>
+                                <p class="module-card-desc">Review meeting room and desk requests that still need admin action.</p>
+                                <span class="module-card-meta" id="dashboardBookingMeta"><i class="fas fa-inbox"></i> Nothing waiting</span>
+                            </div>
+                        </a>
+
+                        <a href="#tables" class="module-card tables-card" onclick="showSection('tables')">
+                            <div class="module-card-top">
+                                <div>
+                                    <div class="module-card-label">Table Management</div>
+                                    <div class="module-card-value" id="dashboardTableCount">0 / 0</div>
+                                </div>
+                                <div class="module-card-icon"><i class="fas fa-table-cells-large"></i></div>
+                            </div>
+                            <div>
+                                <p class="module-card-desc">Check occupied desks, available spaces, and intern allocations quickly.</p>
+                                <span class="module-card-meta" id="dashboardTableMeta"><i class="fas fa-chair"></i> Waiting for table data</span>
+                            </div>
+                        </a>
+
+                        <a href="#attachment" class="module-card attachment-card" onclick="showSection('attachment')">
+                            <div class="module-card-top">
+                                <div>
+                                    <div class="module-card-label">Student Attachment</div>
+                                    <div class="module-card-value" id="dashboardAttachmentCount">0</div>
+                                </div>
+                                <div class="module-card-icon"><i class="fas fa-user-graduate"></i></div>
+                            </div>
+                            <div>
+                                <p class="module-card-desc">Review registrations, applicant details, and new attachment submissions.</p>
+                                <span class="module-card-meta" id="dashboardAttachmentMeta"><i class="fas fa-envelope-open-text"></i> No new applications</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="quick-action-row">
+                        <a href="#minutes" class="quick-action-chip" onclick="showSection('minutes')"><i class="fas fa-plus"></i> Add minutes</a>
+                        <a href="#attendance" class="quick-action-chip" onclick="showSection('attendance')"><i class="fas fa-user-check"></i> Mark attendance</a>
+                        <a href="#finance" class="quick-action-chip" onclick="showSection('finance')"><i class="fas fa-money-bill-trend-up"></i> Update finance</a>
+                        <a href="#booking" class="quick-action-chip" onclick="showSection('booking')"><i class="fas fa-list-check"></i> Review bookings</a>
+                    </div>
                 </div>
-                <div class="table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Time</th>
-                                <th>Activity</th>
-                                <th>User</th>
-                                <th>Details</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>10:30 AM</td>
-                                <td>Updated meeting minutes</td>
-                                <td>Admin</td>
-                                <td>Lab Meeting - March 2024</td>
-                            </tr>
-                            <tr>
-                                <td>09:15 AM</td>
-                                <td>Marked attendance</td>
-                                <td>Admin</td>
-                                <td>45 students present</td>
-                            </tr>
-                            <tr>
-                                <td>Yesterday</td>
-                                <td>Added new expense</td>
-                                <td>Admin</td>
-                                <td>Lab equipment - $1,200</td>
-                            </tr>
-                            <tr>
-                                <td>Mar 12, 2024</td>
-                                <td>Approved booking</td>
-                                <td>Admin</td>
-                                <td>Meeting Room A - 2:00 PM</td>
-                            </tr>
-                        </tbody>
-                    </table>
+
+                <div class="dashboard-panel">
+                    <h3><i class="fas fa-bell"></i> Notifications & Reminders</h3>
+                    <div class="glance-list mb-4">
+                        <div class="glance-item">
+                            <div class="glance-title">Items Needing Attention</div>
+                            <span class="glance-value" id="dashboardReminderCount">0</span>
+                            <div class="glance-meta">Includes new registrations, bookings, and upcoming calendar reminders.</div>
+                        </div>
+                        <div class="glance-item">
+                            <div class="glance-title">Dashboard Focus</div>
+                            <span class="glance-value" id="dashboardFocusValue">All systems visible</span>
+                            <div class="glance-meta" id="dashboardFocusMeta">Your admin overview is ready for daily review.</div>
+                        </div>
+                    </div>
+                    <div class="notification-slider">
+                        <div class="notification-slider-header">
+                            <div class="glance-meta">Compact reminders with equal-size cards.</div>
+                            <div class="notification-slider-controls">
+                                <button type="button" class="notification-nav" id="notificationPrevBtn" onclick="changeNotificationSlide(-1)">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <span class="notification-counter" id="notificationCounter">0 / 0</span>
+                                <button type="button" class="notification-nav" id="notificationNextBtn" onclick="changeNotificationSlide(1)">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="notification-stage" id="dashboardNotificationList">
+                            <div class="notification-empty">
+                                No reminders yet. New registrations and important updates will appear here.
+                            </div>
+                        </div>
+                        <div class="notification-dots" id="dashboardNotificationDots"></div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -802,7 +1791,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="table-container">
+                <div class="table-container cashbook-scroll">
                     <table class="data-table">
                         <thead>
                             <tr>
@@ -812,7 +1801,7 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="minutesTableBody">
                             <tr>
                                 <td>Lab Progress Meeting - March 2024</td>
                                 <td>Mar 15, 2024</td>
@@ -872,7 +1861,7 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="attendanceTableBody">
                             <tr>
                                 <td>PG2024001</td>
                                 <td>John Doe</td>
@@ -981,23 +1970,32 @@
   </div>
 </div>
 
-                <div class="table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                            <th>No</th>
-                            <th>Date</th>
-                            <th>Detail</th>
-                            <th>Amount (RM)</th>
-                            <th>In (RM)</th>
-                            <th>In Detail</th>
-                            <th>Balance (RM)</th>
-                            <th>Method</th>
-                            <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="expenseBody"></tbody>
-                    </table>
+                <div class="cashbook-shell">
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                <th>No</th>
+                                <th>Date</th>
+                                <th>Detail</th>
+                                <th>Amount (RM)</th>
+                                <th>In (RM)</th>
+                                <th>In Detail</th>
+                                <th>Balance (RM)</th>
+                                <th>Method</th>
+                                <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="expenseBody"></tbody>
+                        </table>
+                    </div>
+                    <div class="cashbook-pager">
+                        <span class="cashbook-page-info" id="expensePageInfo">Page 1 of 1</span>
+                        <div class="cashbook-pager-actions">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" id="expensePrevBtn" onclick="changeExpensePage(-1)">Previous</button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm" id="expenseNextBtn" onclick="changeExpensePage(1)">Next</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1065,96 +2063,167 @@
             </div>
         </section>
 
-        <section id="tables" class="section-tabs">
-  <div class="dashboard-card">
-    <div class="card-header">
-      <h2>Table Management (Click Table)</h2>
+<section id="tables" class="section-tabs">
+  <div class="table-management-shell">
+    <div class="table-management-header">
+      <div>
+        <h2>Table Management</h2>
+        <p>Select any desk on the layout to update its status, assign an owner label, and manage availability with a cleaner visual map.</p>
+      </div>
+      <div class="table-summary-grid">
+        <div class="table-summary-card">
+          <strong id="tableOccupiedCount">0</strong>
+          <span>Occupied</span>
+        </div>
+        <div class="table-summary-card">
+          <strong id="tableAvailableCount">0</strong>
+          <span>Available</span>
+        </div>
+        <div class="table-summary-card">
+          <strong id="tableInternCount">0</strong>
+          <span>Intern</span>
+        </div>
+      </div>
     </div>
 
-    <div class="floor-plan">
+    <div class="table-management-grid">
+      <div class="table-board">
+        <div class="table-board-header">
+          <div>
+            <h3>Lab Floor Plan</h3>
+            <p>Click a table to inspect and edit it.</p>
+          </div>
+          <div class="table-legend">
+            <span class="table-legend-item"><span class="table-legend-dot available-dot"></span> Available</span>
+            <span class="table-legend-item"><span class="table-legend-dot occupied-dot"></span> Occupied</span>
+            <span class="table-legend-item"><span class="table-legend-dot intern-dot"></span> Intern</span>
+            <span class="table-legend-item"><span class="table-legend-dot facility-dot"></span> Facility</span>
+          </div>
+        </div>
 
-      <div class="facility meeting">MEETING ROOM</div>
-      <div class="facility lounge">LOUNGE</div>
-      <div class="facility pantry">PANTRY</div>
+        <div class="table-board-scroll">
+          <div class="floor-plan">
+            <div class="facility meeting">MEETING ROOM</div>
+            <div class="facility lounge">LOUNGE</div>
+            <div class="facility pantry">PANTRY</div>
 
-      <div class="intern internL">INTERN</div>
-      <div class="intern internR">INTERN</div>
-      <div class="intern internL2">INTERN</div>
-      <div class="intern internR2">INTERN</div>
+            <div class="intern internL">INTERN</div>
+            <div class="intern internR">INTERN</div>
+            <div class="intern internL2">INTERN</div>
+            <div class="intern internR2">INTERN</div>
 
-      <!-- LEFT -->
-      <div class="desk l1" data-table="L1">L1</div>
-      <div class="desk l2" data-table="L2">L2</div>
-      <div class="desk l3" data-table="L3">L3</div>
-      <div class="desk l4" data-table="L4">L4</div>
-      <div class="desk l5" data-table="L5">L5</div>
-      <div class="desk l6" data-table="L6">L6</div>
-      <div class="desk l7" data-table="L7">L7</div>
-      <div class="desk l8" data-table="L8">L8</div>
-      <div class="desk l9" data-table="L9">L9</div>
-      <div class="desk l10" data-table="L10">L10</div>
-      <div class="desk l11" data-table="L11">L11</div>
-      <div class="desk l12" data-table="L12">L12</div>
+            <div class="desk l1" data-table="L1">L1</div>
+            <div class="desk l2" data-table="L2">L2</div>
+            <div class="desk l3" data-table="L3">L3</div>
+            <div class="desk l4" data-table="L4">L4</div>
+            <div class="desk l5" data-table="L5">L5</div>
+            <div class="desk l6" data-table="L6">L6</div>
+            <div class="desk l7" data-table="L7">L7</div>
+            <div class="desk l8" data-table="L8">L8</div>
+            <div class="desk l9" data-table="L9">L9</div>
+            <div class="desk l10" data-table="L10">L10</div>
+            <div class="desk l11" data-table="L11">L11</div>
+            <div class="desk l12" data-table="L12">L12</div>
 
-      <!-- RIGHT -->
-      <div class="desk r1" data-table="R1">R1</div>
-      <div class="desk r2" data-table="R2">R2</div>
-      <div class="desk r3" data-table="R3">R3</div>
-      <div class="desk r4" data-table="R4">R4</div>
-      <div class="desk r5" data-table="R5">R5</div>
-      <div class="desk r6" data-table="R6">R6</div>
-      <div class="desk r7" data-table="R7">R7</div>
-      <div class="desk r8" data-table="R8">R8</div>
-      <div class="desk r9" data-table="R9">R9</div>
-      <div class="desk r10" data-table="R10">R10</div>
+            <div class="desk r1" data-table="R1">R1</div>
+            <div class="desk r2" data-table="R2">R2</div>
+            <div class="desk r3" data-table="R3">R3</div>
+            <div class="desk r4" data-table="R4">R4</div>
+            <div class="desk r5" data-table="R5">R5</div>
+            <div class="desk r6" data-table="R6">R6</div>
+            <div class="desk r7" data-table="R7">R7</div>
+            <div class="desk r8" data-table="R8">R8</div>
+            <div class="desk r9" data-table="R9">R9</div>
+            <div class="desk r10" data-table="R10">R10</div>
 
-      <div class="facility surauP">SURAU P</div>
-      <div class="facility surauL">SURAU L</div>
-      <div class="facility printing">PRINT</div>
+            <div class="facility surauP">SURAU P</div>
+            <div class="facility surauL">SURAU L</div>
+            <div class="facility printing">PRINT</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-inspector">
+        <div class="table-inspector-header">
+          <div>
+            <h3>Desk Inspector</h3>
+            <p>Review the selected desk and save updates.</p>
+          </div>
+          <span class="table-inspector-badge"><i class="fas fa-location-dot"></i> Live editor</span>
+        </div>
+
+        <div class="table-selected-box">
+          <strong id="selectedDeskLabel">No desk selected</strong>
+          <span id="selectedDeskHint">Choose a desk from the floor plan to edit its status.</span>
+        </div>
+
+        <label for="adminTableStatus">Status</label>
+        <select id="adminTableStatus" class="form-control mb-3">
+          <option value="available">Available</option>
+          <option value="occupied">Occupied</option>
+          <option value="intern">Intern</option>
+        </select>
+
+        <div id="ownerField">
+          <label for="adminTableOwner">Owner / Label</label>
+          <input id="adminTableOwner" class="form-control mb-3" placeholder="Enter occupant name or label">
+        </div>
+
+        <button class="btn btn-success-custom table-save-btn" onclick="saveTableSettings()">Save Table Settings</button>
+      </div>
     </div>
-
-    <hr>
-
-    <label>Status</label>
-    <select id="adminTableStatus" class="form-control mb-2">
-      <option value="available">Available</option>
-      <option value="occupied">Occupied</option>
-      <option value="intern">Intern</option>
-    </select>
-
-    <div id="ownerField">
-  <label>Owner / Label</label>
-  <input id="adminTableOwner" class="form-control mb-3">
-</div>
-
-    <button class="btn btn-success-custom" onclick="saveTableSettings()">Save Table</button>
   </div>
 </section>
 
 <section id="attachment" class="section-tabs">
-  <div class="dashboard-card">
-    <div class="card-header">
-      <h2>
-        <i class="fas fa-user-graduate"></i>
-        Student Attachment Opportunity
-      </h2>
+  <div class="attachment-shell">
+    <div class="attachment-hero">
+      <div class="attachment-hero-copy">
+        <span class="attachment-kicker"><i class="fas fa-briefcase"></i> Attachment intake</span>
+        <h2><i class="fas fa-user-graduate"></i> Student Attachment Opportunity</h2>
+        <p>Keep attachment applications organized with a cleaner review flow for new candidates, universities, and fast communication follow-up.</p>
+      </div>
+      <div class="attachment-summary-grid">
+        <div class="attachment-summary-card">
+          <strong id="attachmentTotalCount">0</strong>
+          <span>Total Applications</span>
+        </div>
+        <div class="attachment-summary-card">
+          <strong id="attachmentUniversityCount">0</strong>
+          <span>Universities</span>
+        </div>
+        <div class="attachment-summary-card">
+          <strong id="attachmentFieldCount">0</strong>
+          <span>Fields</span>
+        </div>
+      </div>
     </div>
 
-    <div class="table-container">
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>No</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>University</th>
-            <th>Field</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="attachmentList"></tbody>
-      </table>
+    <div class="attachment-table-card">
+      <div class="attachment-table-head">
+        <div>
+          <h3>Applicant Review Board</h3>
+          <p>Review submissions, open details, and contact applicants directly.</p>
+        </div>
+        <span class="attachment-pill"><i class="fas fa-sparkles"></i> Attachment pipeline</span>
+      </div>
+
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>University</th>
+              <th>Field</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="attachmentList"></tbody>
+        </table>
+      </div>
     </div>
   </div>
 </section>
@@ -1291,34 +2360,377 @@ const db = firebase.database();
 let currentYear = new Date().getFullYear();
 const months = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
 
+const dashboardState = {
+  minutesCount: 0,
+  attendanceCount: 0,
+  financeBalance: 0,
+  financeEntries: 0,
+  expenseRows: [],
+  expensePage: 1,
+  expensePageSize: 10,
+  calendarEvents: [],
+  meetingBookings: [],
+  tableBookings: [],
+  tables: { occupied: 0, total: 0, intern: 0, available: 0 },
+  attachments: [],
+  systemNotifications: [],
+  notificationSlides: [],
+  activeNotificationIndex: 0
+};
+
+function setDashboardText(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = value;
+}
+
+function formatCurrency(value) {
+  return `RM ${Number(value || 0).toFixed(2)}`;
+}
+
+function pluralize(count, single, plural = `${single}s`) {
+  return `${count} ${count === 1 ? single : plural}`;
+}
+
+function formatDateLabel(value) {
+  if (!value) return "No date";
+  const date = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(date.getTime())) return String(value);
+
+  return date.toLocaleDateString("en-MY", {
+    day: "numeric",
+    month: "short",
+    year: "numeric"
+  });
+}
+
+function formatDateTimeLabel(value) {
+  if (!value) return "Just now";
+  const date = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(date.getTime())) return String(value);
+
+  return date.toLocaleString("en-MY", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit"
+  });
+}
+
+function updateStaticDashboardCounts() {
+  dashboardState.minutesCount =
+    document.querySelectorAll("#minutesTableBody tr").length;
+  dashboardState.attendanceCount =
+    document.querySelectorAll("#attendanceTableBody tr").length;
+
+  setDashboardText("dashboardMinutesCount", dashboardState.minutesCount);
+  setDashboardText(
+    "dashboardMinutesMeta",
+    dashboardState.minutesCount
+      ? `${pluralize(dashboardState.minutesCount, "record")} available`
+      : "Ready to update"
+  );
+
+  setDashboardText("dashboardAttendanceCount", dashboardState.attendanceCount);
+  setDashboardText(
+    "dashboardAttendanceMeta",
+    dashboardState.attendanceCount
+      ? `${pluralize(dashboardState.attendanceCount, "attendance log")} shown`
+      : "Manual log ready"
+  );
+
+  updateDashboardFocus();
+}
+
+function renderDashboardNotifications() {
+  const container = document.getElementById("dashboardNotificationList");
+  const dots = document.getElementById("dashboardNotificationDots");
+  const counter = document.getElementById("notificationCounter");
+  const prevBtn = document.getElementById("notificationPrevBtn");
+  const nextBtn = document.getElementById("notificationNextBtn");
+  if (!container) return;
+
+  const items = [];
+  const now = new Date();
+  const upcomingLimit = new Date();
+  upcomingLimit.setDate(now.getDate() + 7);
+
+  dashboardState.attachments.forEach(app => {
+    items.push({
+      title: "New student attachment registration",
+      body: `${app.name || "A student"} submitted details${app.university ? ` from ${app.university}` : ""}.`,
+      meta: app.createdAt ? formatDateTimeLabel(app.createdAt) : "Registration received",
+      tone: "urgent",
+      sortDate: app.createdAt ? new Date(app.createdAt) : now
+    });
+  });
+
+  dashboardState.meetingBookings.forEach(booking => {
+    items.push({
+      title: "Meeting room booking pending approval",
+      body: `${booking.bookedBy || "Someone"} requested ${booking.date || "a meeting slot"}${booking.startTime ? ` from ${booking.startTime} to ${booking.endTime}` : ""}.`,
+      meta: booking.purpose || "Review booking request",
+      tone: "warning",
+      sortDate: booking.date ? new Date(booking.date) : now
+    });
+  });
+
+  dashboardState.tableBookings.forEach(booking => {
+    items.push({
+      title: "Table booking request received",
+      body: `${booking.lecturerName || booking.studentName || "A user"} requested table ${booking.tableId || "-"}.`,
+      meta: booking.date || "Check table booking",
+      tone: "warning",
+      sortDate: booking.date ? new Date(booking.date) : now
+    });
+  });
+
+  dashboardState.systemNotifications.forEach(notification => {
+    items.push({
+      title: notification.title || "System notification",
+      body: notification.body || notification.message || "Important information was received.",
+      meta: notification.meta || "Notification",
+      tone: notification.tone || "default",
+      sortDate: notification.sortDate || now
+    });
+  });
+
+  dashboardState.calendarEvents
+    .filter(event => {
+      const eventDate = new Date(event.start);
+      return eventDate >= now && eventDate <= upcomingLimit;
+    })
+    .sort((a, b) => new Date(a.start) - new Date(b.start))
+    .slice(0, 3)
+    .forEach(event => {
+      items.push({
+        title: "Upcoming calendar reminder",
+        body: `${event.title} is scheduled for ${formatDateLabel(event.start)}.`,
+        meta: "Upcoming within 7 days",
+        tone: "default",
+        sortDate: new Date(event.start)
+      });
+    });
+
+  items.sort((a, b) => {
+    const priority = { urgent: 0, warning: 1, default: 2 };
+    const toneDiff = (priority[a.tone] ?? 2) - (priority[b.tone] ?? 2);
+    if (toneDiff !== 0) return toneDiff;
+    return new Date(b.sortDate) - new Date(a.sortDate);
+  });
+
+  const visibleItems = items.slice(0, 6);
+  dashboardState.notificationSlides = visibleItems;
+  if (dashboardState.activeNotificationIndex >= visibleItems.length) {
+    dashboardState.activeNotificationIndex = 0;
+  }
+  setDashboardText("dashboardReminderCount", visibleItems.length);
+
+  if (!visibleItems.length) {
+    container.innerHTML = `
+      <div class="notification-empty">
+        No reminders yet. New registrations and important updates will appear here.
+      </div>
+    `;
+    if (dots) dots.innerHTML = "";
+    if (counter) counter.textContent = "0 / 0";
+    if (prevBtn) prevBtn.disabled = true;
+    if (nextBtn) nextBtn.disabled = true;
+    updateDashboardFocus();
+    return;
+  }
+
+  renderNotificationSlide();
+  updateDashboardFocus(visibleItems);
+}
+
+function renderNotificationSlide() {
+  const container = document.getElementById("dashboardNotificationList");
+  const dots = document.getElementById("dashboardNotificationDots");
+  const counter = document.getElementById("notificationCounter");
+  const prevBtn = document.getElementById("notificationPrevBtn");
+  const nextBtn = document.getElementById("notificationNextBtn");
+  const slides = dashboardState.notificationSlides;
+
+  if (!container) return;
+
+  if (!slides.length) {
+    container.innerHTML = `
+      <div class="notification-empty">
+        No reminders yet. New registrations and important updates will appear here.
+      </div>
+    `;
+    if (dots) dots.innerHTML = "";
+    if (counter) counter.textContent = "0 / 0";
+    if (prevBtn) prevBtn.disabled = true;
+    if (nextBtn) nextBtn.disabled = true;
+    return;
+  }
+
+  const active = slides[dashboardState.activeNotificationIndex] || slides[0];
+
+  container.innerHTML = `
+    <div class="notification-item ${active.tone}">
+      <div>
+        <p class="notification-title">${active.title}</p>
+        <div class="notification-body">${active.body}</div>
+      </div>
+      <div class="notification-meta">${active.meta}</div>
+    </div>
+  `;
+
+  if (dots) {
+    dots.innerHTML = slides.map((_, index) => `
+      <span class="notification-dot ${index === dashboardState.activeNotificationIndex ? "active" : ""}"></span>
+    `).join("");
+  }
+
+  if (counter) {
+    counter.textContent = `${dashboardState.activeNotificationIndex + 1} / ${slides.length}`;
+  }
+
+  const disableNav = slides.length <= 1;
+  if (prevBtn) prevBtn.disabled = disableNav;
+  if (nextBtn) nextBtn.disabled = disableNav;
+}
+
+function changeNotificationSlide(step) {
+  const slides = dashboardState.notificationSlides;
+  if (!slides.length) return;
+
+  dashboardState.activeNotificationIndex =
+    (dashboardState.activeNotificationIndex + step + slides.length) % slides.length;
+  renderNotificationSlide();
+}
+
+function updateDashboardFocus(notificationItems = []) {
+  const pendingBookings =
+    dashboardState.meetingBookings.length + dashboardState.tableBookings.length;
+  const attachments = dashboardState.attachments.length;
+  const upcomingEvents = dashboardState.calendarEvents.filter(event => {
+    const eventDate = new Date(event.start);
+    const nextWeek = new Date();
+    nextWeek.setDate(nextWeek.getDate() + 7);
+    return eventDate >= new Date() && eventDate <= nextWeek;
+  }).length;
+
+  let title = "All systems visible";
+  let meta = "Your admin overview is ready for daily review.";
+
+  if (attachments > 0) {
+    title = `${attachments} new ${attachments === 1 ? "registration" : "registrations"}`;
+    meta = "Student attachment applications are waiting for your review.";
+  } else if (pendingBookings > 0) {
+    title = `${pendingBookings} booking ${pendingBookings === 1 ? "request" : "requests"}`;
+    meta = "Meeting room and desk requests still need admin action.";
+  } else if (upcomingEvents > 0) {
+    title = `${upcomingEvents} upcoming ${upcomingEvents === 1 ? "event" : "events"}`;
+    meta = "Calendar reminders are active for the coming 7 days.";
+  } else if (notificationItems.length > 0) {
+    title = "Notifications updated";
+    meta = "Fresh information has arrived and is shown below.";
+  }
+
+  setDashboardText("dashboardFocusValue", title);
+  setDashboardText("dashboardFocusMeta", meta);
+}
+
+function renderDeskCard(el, status = "available", ownerName = "") {
+  if (!el) return;
+
+  const tableId = el.dataset.table || "";
+  const normalizedStatus = status || "available";
+
+  const appearance = {
+    available: {
+      label: "Available",
+      title: "Open Desk",
+      subtitle: "Ready for booking",
+      icon: "fa-chair"
+    },
+    occupied: {
+      label: "Occupied",
+      title: ownerName || "Assigned Desk",
+      subtitle: "Currently in use",
+      icon: "fa-user"
+    },
+    intern: {
+      label: "Intern",
+      title: ownerName || "Intern Zone",
+      subtitle: "Reserved workspace",
+      icon: "fa-user-graduate"
+    },
+    booked: {
+      label: "Booked",
+      title: ownerName || "Reserved Desk",
+      subtitle: "Awaiting check-in",
+      icon: "fa-calendar-check"
+    }
+  }[normalizedStatus] || {
+    label: "Available",
+    title: "Open Desk",
+    subtitle: "Ready for booking",
+    icon: "fa-chair"
+  };
+
+  el.classList.remove("available", "occupied", "intern", "booked");
+  el.classList.add(normalizedStatus);
+
+  el.innerHTML = `
+    <div class="desk-card-top">
+      <span class="desk-code">${tableId}</span>
+      <span class="desk-status-chip">${appearance.label}</span>
+    </div>
+    <div class="desk-card-bottom">
+      <span class="desk-icon"><i class="fas ${appearance.icon}"></i></span>
+      <span class="desk-meta">
+        <span class="desk-title">${appearance.title}</span>
+        <span class="desk-subtitle">${appearance.subtitle}</span>
+      </span>
+    </div>
+  `;
+}
+
 db.ref("tables").on("value", snap => {
   document.querySelectorAll(".desk").forEach(d => {
     d.classList.remove("available", "occupied", "intern");
-    d.textContent = "";
+    renderDeskCard(d, "available", "");
   });
 
+  dashboardState.tables = { occupied: 0, total: 0, intern: 0, available: 0 };
+
   const data = snap.val();
-  if (!data) return;
+  if (!data) {
+    setDashboardText("dashboardTableCount", "0 / 0");
+    setDashboardText("dashboardTableMeta", "Waiting for table data");
+    renderDashboardNotifications();
+    return;
+  }
 
   Object.keys(data).forEach(id => {
     const el = document.querySelector(`[data-table="${id}"]`);
+    dashboardState.tables.total += 1;
+
+    if (data[id].status === "occupied") dashboardState.tables.occupied += 1;
+    if (data[id].status === "intern") dashboardState.tables.intern += 1;
+    if (data[id].status === "available") dashboardState.tables.available += 1;
+
     if (!el) return;
-
-    el.classList.add(data[id].status);
-
-    if (data[id].status === "occupied") {
-      el.textContent = data[id].ownerName || "";
-    } 
-    else if (data[id].status === "booked") {
-  el.classList.add("booked");
-    } 
-    else if (data[id].status === "intern") {
-      el.textContent = "INTERN";
-    } 
-    else {
-      el.textContent = "";
-    }
+    renderDeskCard(el, data[id].status, data[id].ownerName || "");
   });
+
+  setDashboardText(
+    "dashboardTableCount",
+    `${dashboardState.tables.occupied} / ${dashboardState.tables.total}`
+  );
+  setDashboardText(
+    "dashboardTableMeta",
+    `${dashboardState.tables.available} available, ${dashboardState.tables.intern} intern`
+  );
+  setDashboardText("tableOccupiedCount", dashboardState.tables.occupied);
+  setDashboardText("tableAvailableCount", dashboardState.tables.available);
+  setDashboardText("tableInternCount", dashboardState.tables.intern);
+  updateDashboardFocus();
 });
 
 function saveCalendarEventToFirebase(date, eventData) {
@@ -1329,9 +2741,15 @@ function saveCalendarEventToFirebase(date, eventData) {
 
 function loadCalendarFromFirebase(calendar) {
   db.ref("calendar").on("value", snap => {
-    if (!snap.exists()) return;
-
     calendar.removeAllEvents();
+    dashboardState.calendarEvents = [];
+
+    if (!snap.exists()) {
+      setDashboardText("dashboardCalendarCount", "0");
+      setDashboardText("dashboardCalendarMeta", "No events scheduled");
+      renderDashboardNotifications();
+      return;
+    }
 
     const data = snap.val();
 
@@ -1344,9 +2762,28 @@ function loadCalendarFromFirebase(calendar) {
           color: ev.color
         });
 
+        dashboardState.calendarEvents.push({
+          title: ev.title,
+          start: date,
+          color: ev.color
+        });
         addToLegend(ev.title, ev.color);
       });
     });
+
+    const upcomingCount = dashboardState.calendarEvents.filter(event => {
+      const eventDate = new Date(event.start);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return eventDate >= today;
+    }).length;
+
+    setDashboardText("dashboardCalendarCount", upcomingCount);
+    setDashboardText(
+      "dashboardCalendarMeta",
+      upcomingCount ? `${pluralize(upcomingCount, "upcoming event")}` : "No events scheduled"
+    );
+    renderDashboardNotifications();
   });
 }
 
@@ -1404,23 +2841,57 @@ function saveExpense() {
 }
 
 function loadNotifications() {
+  const collected = [];
+
+  function syncSystemNotifications() {
+    dashboardState.systemNotifications = [...collected];
+    renderDashboardNotifications();
+  }
 
   // TABLE BOOKINGS
   db.ref("notifications/tableBookings").on("value", snap => {
-    if (!snap.exists()) return;
+    for (let i = collected.length - 1; i >= 0; i -= 1) {
+      if (collected[i].source === "table-notification") collected.splice(i, 1);
+    }
 
-    Object.entries(snap.val()).forEach(([id, n]) => {
-      console.log("Table Notification:", n.message);
-    });
+    if (snap.exists()) {
+      Object.entries(snap.val()).forEach(([id, n]) => {
+        collected.push({
+          source: "table-notification",
+          title: "Table booking update",
+          body: n.message || "A table booking update was received.",
+          meta: n.createdAt ? formatDateTimeLabel(n.createdAt) : "Table booking notification",
+          tone: "warning",
+          sortDate: n.createdAt ? new Date(n.createdAt) : new Date(),
+          id
+        });
+      });
+    }
+
+    syncSystemNotifications();
   });
 
   // MEETING BOOKINGS
   db.ref("notifications/meetingBookings").on("value", snap => {
-    if (!snap.exists()) return;
+    for (let i = collected.length - 1; i >= 0; i -= 1) {
+      if (collected[i].source === "meeting-notification") collected.splice(i, 1);
+    }
 
-    Object.entries(snap.val()).forEach(([id, n]) => {
-      console.log("Meeting Notification:", n.message);
-    });
+    if (snap.exists()) {
+      Object.entries(snap.val()).forEach(([id, n]) => {
+        collected.push({
+          source: "meeting-notification",
+          title: "Meeting booking update",
+          body: n.message || "A meeting booking update was received.",
+          meta: n.createdAt ? formatDateTimeLabel(n.createdAt) : "Meeting booking notification",
+          tone: "warning",
+          sortDate: n.createdAt ? new Date(n.createdAt) : new Date(),
+          id
+        });
+      });
+    }
+
+    syncSystemNotifications();
   });
 }
 
@@ -1647,8 +3118,6 @@ loadNotifications();
 
   document.getElementById('section-title').textContent = titles[sectionId];
 
-document.getElementById(sectionId).classList.add('active');
-
 if (sectionId === 'calendar' && calendar) {
   setTimeout(() => {
     calendar.updateSize();
@@ -1744,24 +3213,37 @@ updateOwnerVisibility();
 
 function loadExpenses() {
   const body = document.getElementById("expenseBody");
+  if (!body) return;
   body.innerHTML = "";
 
   let balance = 0;
-  let i = 1;
 
   db.ref("expenses")
     .orderByChild("dateISO")
     .on("value", snap => {
       body.innerHTML = "";
       balance = 0;
-      i = 1;
+      dashboardState.financeEntries = 0;
 
-      if (!snap.exists()) return;
+      if (!snap.exists()) {
+        dashboardState.expenseRows = [];
+        dashboardState.expensePage = 1;
+        renderExpensePage();
+        dashboardState.financeBalance = 0;
+        setDashboardText("dashboardFinanceCount", formatCurrency(0));
+        setDashboardText("dashboardFinanceMeta", "No transactions yet");
+        updateDashboardFocus();
+        return;
+      }
+
+      const rows = [];
+      let i = 1;
 
       Object.entries(snap.val()).forEach(([id, e]) => {
         balance += (e.in || 0) - (e.amount || 0);
+        dashboardState.financeEntries += 1;
 
-        body.innerHTML += `
+        rows.push(`
           <tr>
             <td>${i++}</td>
             <td>${e.dateDisplay}</td>
@@ -1778,9 +3260,58 @@ function loadExpenses() {
                 onclick="deleteExpense('${id}')">Delete</button>
             </td>
           </tr>
-        `;
+        `);
       });
+
+      dashboardState.expenseRows = rows.reverse();
+      dashboardState.expensePage = 1;
+      renderExpensePage();
+
+      dashboardState.financeBalance = balance;
+      setDashboardText("dashboardFinanceCount", formatCurrency(balance));
+      setDashboardText(
+        "dashboardFinanceMeta",
+        `${pluralize(dashboardState.financeEntries, "cashbook entry")}`
+      );
+      updateDashboardFocus();
     });
+}
+
+function renderExpensePage() {
+  const body = document.getElementById("expenseBody");
+  const info = document.getElementById("expensePageInfo");
+  const prevBtn = document.getElementById("expensePrevBtn");
+  const nextBtn = document.getElementById("expenseNextBtn");
+  if (!body) return;
+
+  const rows = dashboardState.expenseRows || [];
+  const pageSize = dashboardState.expensePageSize || 10;
+  const totalPages = Math.max(1, Math.ceil(rows.length / pageSize));
+
+  if (dashboardState.expensePage > totalPages) {
+    dashboardState.expensePage = totalPages;
+  }
+  if (dashboardState.expensePage < 1) {
+    dashboardState.expensePage = 1;
+  }
+
+  const start = (dashboardState.expensePage - 1) * pageSize;
+  const end = start + pageSize;
+  body.innerHTML = rows.slice(start, end).join("");
+
+  if (info) {
+    info.textContent = rows.length
+      ? `Page ${dashboardState.expensePage} of ${totalPages}`
+      : "Page 0 of 0";
+  }
+
+  if (prevBtn) prevBtn.disabled = dashboardState.expensePage <= 1;
+  if (nextBtn) nextBtn.disabled = dashboardState.expensePage >= totalPages;
+}
+
+function changeExpensePage(step) {
+  dashboardState.expensePage += step;
+  renderExpensePage();
 }
 
 function editExpense(id) {
@@ -2022,6 +3553,8 @@ function loadAdminBookings() {
 
   meetingBookingList.innerHTML = "";
   tableBookingList.innerHTML = "";
+  dashboardState.meetingBookings = [];
+  dashboardState.tableBookings = [];
 
   // 🔥 VERY IMPORTANT: remove old listeners
   db.ref("bookings/meetingBookings").off();
@@ -2032,15 +3565,33 @@ function loadAdminBookings() {
   // =====================
   db.ref("bookings/meetingBookings").on("value", snap => {
     meetingBookingList.innerHTML = "";
+    dashboardState.meetingBookings = [];
 
-    if (!snap.exists()) return;
+    if (!snap.exists()) {
+      const totalPending =
+        dashboardState.meetingBookings.length + dashboardState.tableBookings.length;
+      setDashboardText("dashboardBookingCount", totalPending);
+      setDashboardText("dashboardBookingMeta", "Nothing waiting");
+      renderDashboardNotifications();
+      return;
+    }
 
     Object.entries(snap.val()).forEach(([id, b]) => {
       // ❌ DO NOT SHOW rejected
       if (b.status === "rejected") return;
 
+      dashboardState.meetingBookings.push({ id, ...b });
       addMeetingBookingRow(id, b);
     });
+
+    const totalPending =
+      dashboardState.meetingBookings.length + dashboardState.tableBookings.length;
+    setDashboardText("dashboardBookingCount", totalPending);
+    setDashboardText(
+      "dashboardBookingMeta",
+      totalPending ? `${pluralize(totalPending, "request")} pending` : "Nothing waiting"
+    );
+    renderDashboardNotifications();
   });
 
   // =====================
@@ -2048,13 +3599,34 @@ function loadAdminBookings() {
   // =====================
   db.ref("bookings/tableBookings").on("value", snap => {
     tableBookingList.innerHTML = "";
+    dashboardState.tableBookings = [];
 
-    if (!snap.exists()) return;
+    if (!snap.exists()) {
+      const totalPending =
+        dashboardState.meetingBookings.length + dashboardState.tableBookings.length;
+      setDashboardText("dashboardBookingCount", totalPending);
+      setDashboardText(
+        "dashboardBookingMeta",
+        totalPending ? `${pluralize(totalPending, "request")} pending` : "Nothing waiting"
+      );
+      renderDashboardNotifications();
+      return;
+    }
 
     Object.entries(snap.val()).forEach(([id, b]) => {
       if (b.status === "rejected") return;
+      dashboardState.tableBookings.push({ id, ...b });
       addTableBookingRow(id, b);
     });
+
+    const totalPending =
+      dashboardState.meetingBookings.length + dashboardState.tableBookings.length;
+    setDashboardText("dashboardBookingCount", totalPending);
+    setDashboardText(
+      "dashboardBookingMeta",
+      totalPending ? `${pluralize(totalPending, "request")} pending` : "Nothing waiting"
+    );
+    renderDashboardNotifications();
   });
 }
 
@@ -2317,15 +3889,14 @@ function rejectBooking(type, bookingId, tableId) {
 
   // UPDATE UI IMMEDIATELY
   const el = document.querySelector(`[data-table="${selectedAdminTable}"]`);
-  el.classList.remove("available", "occupied", "intern");
-  el.classList.add(status);
+  renderDeskCard(el, status, status === "occupied" ? ownerInput : status === "intern" ? "INTERN" : "");
 
   if (status === "occupied") {
-    el.textContent = ownerInput;
+    setDashboardText("selectedDeskHint", `Saved as occupied for ${ownerInput}`);
   } else if (status === "intern") {
-    el.textContent = "INTERN";
+    setDashboardText("selectedDeskHint", "Saved as intern desk");
   } else {
-    el.textContent = "";
+    setDashboardText("selectedDeskHint", "Saved as available");
   }
 
   alert("Table saved");
@@ -2341,8 +3912,15 @@ function loadStudentAttachments() {
 
   db.ref("attachment").on("value", snap => {
     attachmentList.innerHTML = "";
+    dashboardState.attachments = [];
 
     if (!snap.exists()) {
+      setDashboardText("attachmentTotalCount", "0");
+      setDashboardText("attachmentUniversityCount", "0");
+      setDashboardText("attachmentFieldCount", "0");
+      setDashboardText("dashboardAttachmentCount", "0");
+      setDashboardText("dashboardAttachmentMeta", "No new applications");
+      renderDashboardNotifications();
       attachmentList.innerHTML = `
         <tr>
           <td colspan="7" class="text-center text-muted">
@@ -2354,8 +3932,13 @@ function loadStudentAttachments() {
     }
 
     let i = 1;
+    const universities = new Set();
+    const fields = new Set();
 
     Object.entries(snap.val()).forEach(([id, s]) => {
+      dashboardState.attachments.push({ id, ...s });
+      if (s.university) universities.add(String(s.university).trim());
+      if (s.field) fields.add(String(s.field).trim());
       attachmentList.innerHTML += `
         <tr>
           <td>${i++}</td>
@@ -2382,6 +3965,18 @@ function loadStudentAttachments() {
         </tr>
       `;
     });
+
+    setDashboardText("attachmentTotalCount", dashboardState.attachments.length);
+    setDashboardText("attachmentUniversityCount", universities.size);
+    setDashboardText("attachmentFieldCount", fields.size);
+    setDashboardText("dashboardAttachmentCount", dashboardState.attachments.length);
+    setDashboardText(
+      "dashboardAttachmentMeta",
+      dashboardState.attachments.length
+        ? `${pluralize(dashboardState.attachments.length, "application")} received`
+        : "No new applications"
+    );
+    renderDashboardNotifications();
   });
 }
 
@@ -2421,14 +4016,28 @@ let selectedAdminTable = null;
 document.querySelectorAll('.desk').forEach(desk => {
   desk.addEventListener('click', () => {
     selectedAdminTable = desk.dataset.table;
+    setDashboardText("selectedDeskLabel", `Desk ${selectedAdminTable} selected`);
 
     document.querySelectorAll('.desk').forEach(d => d.classList.remove('selected'));
     desk.classList.add('selected');
 
     db.ref("tables/" + selectedAdminTable).once("value", snap => {
-      if (!snap.exists()) return;
+      if (!snap.exists()) {
+        adminTableStatus.value = "available";
+        adminTableOwner.value = "";
+        setDashboardText("selectedDeskHint", "This desk is not configured yet. Choose a status and save.");
+        updateOwnerVisibility();
+        return;
+      }
+
       adminTableStatus.value = snap.val().status;
       adminTableOwner.value = snap.val().ownerName || "";
+      setDashboardText(
+        "selectedDeskHint",
+        snap.val().ownerName
+          ? `Current label: ${snap.val().ownerName}`
+          : `Current status: ${snap.val().status || "available"}`
+      );
       updateOwnerVisibility(); // 👈 ADD THIS LINE
     });
   });
@@ -2436,6 +4045,8 @@ document.querySelectorAll('.desk').forEach(desk => {
 
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("financeYear").textContent = "YEAR " + currentYear;
+  document.querySelectorAll(".desk").forEach(desk => renderDeskCard(desk, "available", ""));
+  updateStaticDashboardCounts();
   loadFinanceYear();
   loadExpenses();
   loadStudentAttachments();
