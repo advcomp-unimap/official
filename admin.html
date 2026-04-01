@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -2377,6 +2378,7 @@
                             <tr>
                                 <th>Resource</th>
                                 <th>Booked By</th>
+                                <th>Phone</th>
                                 <th>Date</th>
                                 <th>Time</th>
                                 <th>Purpose</th>
@@ -2396,6 +2398,7 @@
                             <tr>
                                 <th>Table</th>
                                 <th>Booked By</th>
+                                <th>Phone</th>
                                 <th>Date</th>
                                 <th>Purpose</th>
                                 <th>Status</th>
@@ -4444,6 +4447,7 @@ function addMeetingBookingRow(id, b) {
   tr.innerHTML = `
     <td>Meeting Room</td>
     <td>${b.bookedBy}</td>
+    <td>${b.phoneNumber || "-"}</td>
     <td>${b.date}</td>
     <td>${b.startTime} - ${b.endTime}</td>
     <td>${b.purpose}</td>
@@ -4460,6 +4464,7 @@ function addTableBookingRow(id, b) {
   tr.innerHTML = `
     <td>Table ${b.tableId}</td>
     <td>${b.lecturerName}</td>
+    <td>${b.phoneNumber || "-"}</td>
     <td>${b.date}</td>
     <td>${b.purpose}</td>
     <td><span class="status-badge status-pending">${b.status}</span></td>
