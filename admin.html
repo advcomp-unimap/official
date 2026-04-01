@@ -2151,28 +2151,28 @@
                             </tr>
                         </thead>
                         <tbody id="minutesTableBody">
-                            <tr>
+                            <tr data-minute-date="2024-03-15">
                                 <td>Lab Progress Meeting - March 2024</td>
                                 <td>Mar 15, 2024</td>
                                 <td>Mar 16, 2024</td>
                                 <td>
-                                    <button class="btn btn-primary-custom btn-sm" onclick="editMinute(1)">
+                                    <button class="btn btn-primary-custom btn-sm" onclick="editMinuteByButton(this)">
                                         <i class="fas fa-edit"></i> Edit
                                     </button>
-                                    <button class="btn btn-success-custom btn-sm" onclick="printMinuteFromRow(0)">
+                                    <button class="btn btn-success-custom btn-sm" onclick="printMinuteByButton(this)">
                                         <i class="fas fa-print"></i> Print
                                     </button>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr data-minute-date="2024-03-10">
                                 <td>Research Committee Meeting</td>
                                 <td>Mar 10, 2024</td>
                                 <td>Mar 12, 2024</td>
                                 <td>
-                                    <button class="btn btn-primary-custom btn-sm" onclick="editMinute(2)">
+                                    <button class="btn btn-primary-custom btn-sm" onclick="editMinuteByButton(this)">
                                         <i class="fas fa-edit"></i> Edit
                                     </button>
-                                    <button class="btn btn-success-custom btn-sm" onclick="printMinuteFromRow(1)">
+                                    <button class="btn btn-success-custom btn-sm" onclick="printMinuteByButton(this)">
                                         <i class="fas fa-print"></i> Print
                                     </button>
                                 </td>
@@ -2587,36 +2587,38 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label">Meeting Title</label>
-                        <input type="text" class="form-control" id="minuteTitle" value="Lab Progress Meeting - March 2024">
+                        <input type="text" class="form-control" id="minuteTitle" placeholder="Example: Weekly Research Progress Meeting">
+                        <small class="text-muted">Sample: Weekly Research Progress Meeting, Supervisor Discussion, Lab Committee Meeting</small>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Meeting Date</label>
-                        <input type="date" class="form-control" id="minuteDate" value="2024-03-15">
+                        <input type="date" class="form-control" id="minuteDate">
+                        <small class="text-muted">Choose the actual date of the meeting.</small>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Minutes Content</label>
-                        <textarea class="form-control" id="minuteContent" rows="10">
-1. Opening and Welcome
-   - Meeting called to order at 2:00 PM
-   - All members present
+                        <textarea class="form-control" id="minuteContent" rows="10" placeholder="Example:
+1. Opening
+- Meeting started at 10:00 AM
+- Chairperson welcomed all attendees
 
-2. Old Business
-   - Review of previous minutes
-   - Action items follow-up
+2. Discussion
+- Progress update by each student
+- Issues raised on equipment / booking / finance
 
-3. New Business
-   - Research progress updates
-   - Equipment procurement discussion
-   - Upcoming symposium planning
+3. Action Items
+- Aiman to update report by Friday
+- Admin to confirm meeting room booking
 
 4. Closing
-   - Next meeting scheduled for April 15, 2024
-   - Meeting adjourned at 4:00 PM
-                        </textarea>
+- Next meeting date agreed
+- Meeting ended at 11:30 AM"></textarea>
+                        <small class="text-muted">Tip: write short points such as opening, discussion, action items, and closing.</small>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger-custom" id="deleteMinuteBtn" onclick="deleteMinute()" style="display: none;">Delete</button>
                     <button type="button" class="btn btn-primary-custom" onclick="saveMinute()">Save Changes</button>
                     <button type="button" class="btn btn-success-custom" onclick="printMinute()">Print</button>
                 </div>
@@ -2722,6 +2724,8 @@ const dashboardState = {
   notificationSlides: [],
   activeNotificationIndex: 0
 };
+
+let editingMinuteRow = null;
 
 function setDashboardText(id, value) {
   const el = document.getElementById(id);
@@ -2838,6 +2842,61 @@ function printMinuteFromRow(rowIndex) {
     updatedDate,
     `${title}\n\nMeeting Date: ${meetingDate}\nLast Updated: ${updatedDate}\n\nPrepared for printing.`
   );
+}
+
+function getMinutesTableRows() {
+  return [...document.querySelectorAll("#minutesTableBody tr")];
+}
+
+function getMinuteRowIndex(row) {
+  return getMinutesTableRows().indexOf(row);
+}
+
+function editMinuteByButton(button) {
+  const row = button.closest("tr");
+  if (!row) return;
+  editMinute(getMinuteRowIndex(row));
+}
+
+function printMinuteByButton(button) {
+  const row = button.closest("tr");
+  if (!row) return;
+  printMinuteFromRow(getMinuteRowIndex(row));
+}
+
+function buildMinuteRowHtml(title, meetingDateLabel, updatedLabel) {
+  return `
+    <td>${escapeHtml(title)}</td>
+    <td>${escapeHtml(meetingDateLabel)}</td>
+    <td>${escapeHtml(updatedLabel)}</td>
+    <td>
+      <button class="btn btn-primary-custom btn-sm" onclick="editMinuteByButton(this)">
+        <i class="fas fa-edit"></i> Edit
+      </button>
+      <button class="btn btn-success-custom btn-sm" onclick="printMinuteByButton(this)">
+        <i class="fas fa-print"></i> Print
+      </button>
+    </td>
+  `;
+}
+
+function getMinuteTemplate() {
+  return `1. Opening
+- Meeting started at:
+- Chairperson / person in charge:
+
+2. Main Discussion
+- Topic 1:
+- Topic 2:
+- Topic 3:
+
+3. Action Items
+- Person responsible:
+- Deadline:
+
+4. Closing
+- Next meeting date:
+- Meeting ended at:`;
 }
 
 function updateStaticDashboardCounts() {
@@ -3829,43 +3888,91 @@ if (sectionId === 'calendar' && calendar) {
 
         // Meeting Minutes functions
         function openNewMinuteModal() {
+            editingMinuteRow = null;
+            document.querySelector("#minuteModal .modal-title").textContent = "New Meeting Minutes";
+            document.getElementById('minuteTitle').value = '';
+            document.getElementById('minuteDate').value = '';
+            document.getElementById('minuteContent').value = getMinuteTemplate();
+            document.getElementById('deleteMinuteBtn').style.display = 'none';
             $('#minuteModal').modal('show');
         }
 
         function editMinute(id) {
-            // In real implementation, load data from server based on ID
+            const row = getMinutesTableRows()[id];
+            if (!row) return;
+
+            const cells = row.querySelectorAll("td");
+            editingMinuteRow = row;
+            document.querySelector("#minuteModal .modal-title").textContent = "Edit Meeting Minutes";
+            document.getElementById('minuteTitle').value = cells[0]?.textContent?.trim() || '';
+            document.getElementById('minuteDate').value = row.dataset.minuteDate || '';
+            document.getElementById('minuteContent').value =
+`Meeting minutes for: ${cells[0]?.textContent?.trim() || "Meeting"}
+
+Meeting Date: ${cells[1]?.textContent?.trim() || "-"}
+Last Updated: ${cells[2]?.textContent?.trim() || "-"}`;
+            document.getElementById('deleteMinuteBtn').style.display = 'inline-flex';
             $('#minuteModal').modal('show');
         }
 
         function saveMinute() {
-            // In real implementation, save to server
-            alert('Meeting minutes saved successfully!');
+            const title = document.getElementById('minuteTitle').value.trim();
+            const meetingDate = document.getElementById('minuteDate').value;
+            const content = document.getElementById('minuteContent').value.trim();
+            const minutesBody = document.getElementById('minutesTableBody');
+
+            if (!title) {
+                alert('Please enter a meeting title');
+                return;
+            }
+
+            if (!meetingDate) {
+                alert('Please select a meeting date');
+                return;
+            }
+
+            if (!content) {
+                alert('Please enter the meeting minutes content');
+                return;
+            }
+
+            const meetingDateLabel = formatDateLabel(meetingDate);
+            const updatedLabel = formatDateLabel(new Date());
+
+            if (editingMinuteRow) {
+                editingMinuteRow.dataset.minuteDate = meetingDate;
+                editingMinuteRow.innerHTML = buildMinuteRowHtml(title, meetingDateLabel, updatedLabel);
+            } else {
+                const row = document.createElement('tr');
+                row.dataset.minuteDate = meetingDate;
+                row.innerHTML = buildMinuteRowHtml(title, meetingDateLabel, updatedLabel);
+                minutesBody.prepend(row);
+            }
+
+            editingMinuteRow = null;
+            document.getElementById('deleteMinuteBtn').style.display = 'none';
+            updateStaticDashboardCounts();
+            $('#minuteModal').modal('hide');
+        }
+
+        function deleteMinute() {
+            if (!editingMinuteRow) return;
+            if (!confirm('Delete this meeting minute?')) return;
+
+            editingMinuteRow.remove();
+            editingMinuteRow = null;
+            document.getElementById('deleteMinuteBtn').style.display = 'none';
+            updateStaticDashboardCounts();
             $('#minuteModal').modal('hide');
         }
 
         function printMinute() {
-            const minuteContent = `
-                <h2>${document.getElementById('minuteTitle').value}</h2>
-                <p><strong>Meeting Date:</strong> ${document.getElementById('minuteDate').value}</p>
-                <hr>
-                <pre>${document.getElementById('minuteContent').value}</pre>
-            `;
-            
-            const printWindow = window.open('', '_blank');
-            printWindow.document.write(`
-                <html>
-                    <head>
-                        <title>Meeting Minutes</title>
-                        <style>
-                            body { font-family: Arial, sans-serif; padding: 20px; }
-                            pre { white-space: pre-wrap; font-family: inherit; }
-                        </style>
-                    </head>
-                    <body>${minuteContent}</body>
-                </html>
-            `);
-            printWindow.document.close();
-            printWindow.print();
+            openMinutePrintWindow(
+                document.getElementById('minuteTitle').value,
+                formatDateLabel(document.getElementById('minuteDate').value),
+                formatDateLabel(new Date()),
+                document.getElementById('minuteContent').value
+            );
         }
 
         const statusSelect = document.getElementById("adminTableStatus");
@@ -4411,6 +4518,66 @@ function generateMeetingSlots(startTime, endTime, interval = 30) {
   }
 
   return slots;
+}
+
+function newBooking() {
+  const bookingType = prompt("Enter booking type: meeting or table", "meeting");
+  if (!bookingType) return;
+
+  const normalizedType = bookingType.trim().toLowerCase();
+  if (!["meeting", "table"].includes(normalizedType)) {
+    alert("Please enter either 'meeting' or 'table'");
+    return;
+  }
+
+  const date = prompt("Enter booking date (YYYY-MM-DD):", new Date().toISOString().slice(0, 10));
+  if (!date) return;
+
+  const purpose = prompt("Enter booking purpose:");
+  if (!purpose) return;
+
+  if (normalizedType === "meeting") {
+    const bookedBy = prompt("Booked by:");
+    if (!bookedBy) return;
+
+    const startTime = prompt("Start time (HH:MM):", "09:00");
+    if (!startTime) return;
+
+    const endTime = prompt("End time (HH:MM):", "10:00");
+    if (!endTime) return;
+
+    db.ref("bookings/meetingBookings").push({
+      bookedBy,
+      date,
+      startTime,
+      endTime,
+      purpose,
+      status: "pending",
+      createdAt: new Date().toISOString()
+    }).then(() => {
+      alert("New meeting booking added");
+    });
+
+    return;
+  }
+
+  const lecturerName = prompt("Booked by / lecturer name:");
+  if (!lecturerName) return;
+
+  const tableId = prompt("Table ID (example: L1 or R2):", "L1");
+  if (!tableId) return;
+
+  db.ref("bookings/tableBookings").push({
+    lecturerName,
+    studentName: "",
+    tableId: tableId.toUpperCase(),
+    date,
+    purpose,
+    status: "pending",
+    createdAt: new Date().toISOString()
+  }).then(() => {
+    alert("New table booking added");
+  });
 }
 
 
