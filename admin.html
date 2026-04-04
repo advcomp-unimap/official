@@ -1784,6 +1784,18 @@
 
     .cashbook-shell .data-table thead th { background: var(--bg-3); }
 
+    .finance-table-wrap {
+        margin-top: 10px;
+    }
+
+    .finance-year-toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        margin: 14px 0 10px;
+    }
+
     .cashbook-pager {
         display: flex;
         justify-content: space-between;
@@ -1861,12 +1873,14 @@
         body { padding-left: 0; }
         .sidebar { transform: translateX(-100%); }
         .sidebar.active { transform: translateX(0); }
-        .main-content { margin-left: 0; width: 100%; max-width: 100%; }
+        .main-content { margin-left: 0; width: 100%; max-width: 100%; padding: 18px; }
         .dashboard-layout { grid-template-columns: 1fr; }
         .table-management-header, .table-management-grid { display: grid; grid-template-columns: 1fr; }
         .table-summary-grid { min-width: 0; }
         .menu-toggle { display: block !important; }
         .availability-grid, .availability-focus, .availability-topbar, .attachment-hero { grid-template-columns: 1fr; }
+        .top-bar { padding: 14px 16px; }
+        .user-info { margin-left: auto; }
     }
 
     @media (max-width: 1200px) {
@@ -1879,6 +1893,167 @@
         }
         .desk { min-height: 76px !important; padding: 7px !important; }
         .attachment-summary-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+        body { font-size: 13px; }
+        .main-content { padding: 12px; }
+        .top-bar,
+        .card-header,
+        .availability-card-header,
+        .availability-topbar,
+        .table-management-header,
+        .table-board-header,
+        .table-inspector-header,
+        .attachment-table-head,
+        .cashbook-pager,
+        .notification-slider-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .top-bar { gap: 12px; }
+        .top-bar h1 { font-size: 1.05rem; }
+        .user-info {
+            width: 100%;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .dashboard-card,
+        .dashboard-panel,
+        .availability-topbar,
+        .availability-card,
+        .notification-rail,
+        .table-management-shell,
+        .table-board,
+        .table-inspector,
+        .attachment-hero,
+        .attachment-table-card {
+            padding: 16px;
+        }
+        .action-buttons,
+        .quick-action-row,
+        .table-legend,
+        .hero-badges {
+            width: 100%;
+        }
+        .action-buttons .btn,
+        .action-buttons button,
+        .action-buttons a,
+        .quick-action-row a,
+        .quick-action-row button {
+            width: 100%;
+            justify-content: center;
+        }
+        .availability-search {
+            min-width: 0;
+            width: 100%;
+        }
+        .stats-grid,
+        .availability-metrics,
+        .availability-main,
+        .availability-focus,
+        .availability-board,
+        .attendance-summary-grid,
+        .attachment-summary-grid,
+        .table-summary-grid {
+            grid-template-columns: 1fr;
+        }
+        .module-card,
+        .availability-card,
+        .notification-stage .notification-item,
+        .notification-stage .notification-empty {
+            min-height: auto;
+        }
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .data-table {
+            min-width: 720px;
+            font-size: 0.8rem;
+        }
+        #finance .data-table,
+        .cashbook-shell .data-table {
+            min-width: 1180px;
+        }
+        .finance-year-toolbar {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .finance-year-toolbar .btn {
+            width: 100%;
+        }
+        #finance h4,
+        #finance h5 {
+            line-height: 1.35;
+        }
+        .table-board-scroll {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 8px;
+        }
+        .floor-plan {
+            width: 640px;
+            min-width: 640px;
+        }
+        .desk {
+            min-height: 72px !important;
+            padding: 7px !important;
+        }
+        .desk-title {
+            font-size: 0.72rem;
+        }
+        .desk-subtitle,
+        .desk-code {
+            font-size: 0.6rem;
+        }
+        .attachment-hero h2,
+        .dashboard-hero h2 {
+            font-size: 1.25rem;
+        }
+        .fc-toolbar {
+            display: grid !important;
+            gap: 10px;
+        }
+        .fc-toolbar-chunk {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .fc-toolbar-title {
+            font-size: 1rem !important;
+        }
+        .row > [class*="col-"] {
+            padding-left: 0;
+            padding-right: 0;
+            margin-bottom: 10px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .sidebar {
+            width: min(88vw, 300px);
+        }
+        .top-bar,
+        .dashboard-card,
+        .availability-topbar,
+        .table-management-shell,
+        .attachment-hero,
+        .attachment-table-card {
+            border-radius: 16px;
+        }
+        .module-card-value,
+        .availability-metric-value,
+        .stat-info h3 {
+            font-size: 1.45rem;
+        }
+        .data-table {
+            min-width: 680px;
+        }
+        .floor-plan {
+            width: 600px;
+            min-width: 600px;
+        }
     }
 
     /* ===== PRINT ===== */
@@ -2262,6 +2437,15 @@
                 </div>
                 </div>
 
+                <div class="finance-year-toolbar">
+                <h4 id="financeYear">YEAR 2025</h4>
+                <div class="d-flex justify-content-between align-items-center gap-2 w-100">
+                    <button class="btn btn-secondary" onclick="changeYear(-1)">⬅</button>
+                    <button class="btn btn-secondary" onclick="changeYear(1)">➡</button>
+                </div>
+                </div>
+
+                <div class="table-container finance-table-wrap">
                 <table class="data-table">
                 <thead>
                     <tr>
@@ -2275,13 +2459,8 @@
                     <th>Action</th>
                     </tr>
                 </thead>
-                <h4 id="financeYear">YEAR 2025</h4>
                 <tbody id="financeYearBody"></tbody>
                 </table>
-
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                <button class="btn btn-secondary" onclick="changeYear(-1)">⬅</button>
-                <button class="btn btn-secondary" onclick="changeYear(1)">➡</button>
                 </div>
 
                 <h5 class="mt-3">
